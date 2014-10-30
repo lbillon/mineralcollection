@@ -18,7 +18,7 @@ Installation
 
 Clone the repository
 
-    git clone https://github.com/jonseg/crud-admin-generator.git admingenerator
+    git clone https://github.com/lbillon/mineralcollection.git admingenerator
 
     cd admingenerator
 
