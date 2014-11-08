@@ -1,5 +1,11 @@
-Grocery CRUD
+MineralCollection
 =============
-Grocery CRUD is a PHP and Codeigniter Framework library that creates a full functional CRUD system without the need to customise JavaScript or CSS.
+A groceryCRUD simple application for managing a collection of minerals.
 
-For more information, visit http://www.grocerycrud.com
+Notes
+-----
+```
+1. Create application/config/development folder, copy database.php inside and adapt to your local setup
+2. Go to http://_APP_ROOT_/index.php/minerals/sites
+3. Profit !
+```
