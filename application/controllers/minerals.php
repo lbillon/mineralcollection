@@ -12,16 +12,21 @@ class Minerals extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 	}
 
-	public function _example_output($output = null)
+	public function _do_output($output = null)
 	{
 		$this->load->view('minerals.php',$output);
 	}
 
 
-	public function index()
-	{
-		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-	}
+    public function index()
+    {
+        $this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array() , 'css_files' => array()));
+    }
+
+    public function map()
+    {
+        $this->_do_output((object)array('output' => $this->load->view('map.html','',true) , 'js_files' => array() , 'css_files' => array()));
+    }
 
 	public function sites()
 	{
@@ -37,7 +42,7 @@ class Minerals extends CI_Controller {
 
 			$output = $crud->render();
 
-			$this->_example_output($output);
+			$this->_do_output($output);
 
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
