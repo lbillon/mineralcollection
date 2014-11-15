@@ -51,21 +51,18 @@ class Examples extends CI_Controller {
 
 	public function employees_management()
 	{
-			$crud = new grocery_CRUD();
+        $crud = new grocery_CRUD();
 
-			$crud->set_theme('datatables');
-			$crud->set_table('employees');
-			$crud->set_relation('officeCode','offices','city');
-			$crud->display_as('officeCode','Office City');
-			$crud->set_subject('Employee');
+        $crud->set_theme('datatables');
+        $crud->set_table('Sites');
+        $crud->set_subject('Site');
+        $crud->display_as('CommuneId','Commune');
+        $crud->set_relation('CommuneId','Communes','CommuneNCCENR');
 
-			$crud->required_fields('lastName');
 
-			$crud->set_field_upload('file_url','assets/uploads/files');
+        $output = $crud->render();
 
-			$output = $crud->render();
-
-			$this->_example_output($output);
+        $this->_example_output($output);
 	}
 
 	public function customers_management()
