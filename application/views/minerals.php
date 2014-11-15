@@ -8,6 +8,8 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        
+    
       <?php
       foreach($css_files as $file): ?>
           <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
@@ -30,6 +32,8 @@
           {
               text-decoration: underline;
           }
+          
+			.angular-google-map-container { height: 600px; }
       </style>
   </head>
   <body>
@@ -53,7 +57,6 @@
 
               </ul>
               <ul class="nav navbar-nav navbar-right">
-
                   <li><a href="#">GSE 2014</a></li>
               </ul>
           </div><!--/.nav-collapse -->
@@ -61,6 +64,7 @@
   </nav>
   <div class="container-fluid">
       <div class="row">
+      	
          <?php echo $output; ?>
       </div>
   </div>
@@ -70,6 +74,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    
+    
+		<!-- Angularjs and other dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
+   
+    <script src="<?php echo asset_url(); ?>app/js/lodash.min.js"></script>
+    <script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.7/dist/angular-google-maps.min.js"></script>
+    
+    <script src="<?php echo asset_url(); ?>app/js/map.js"></script>
+    
+    
 
   </body>
 </html>

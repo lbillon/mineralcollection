@@ -17,7 +17,6 @@ class Minerals extends CI_Controller {
 		$this->load->view('minerals.php',$output);
 	}
 
-
     public function index()
     {
         $this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array() , 'css_files' => array()));
