@@ -52,7 +52,24 @@
               <ul class="nav navbar-nav">
                   <li><a href="<?php echo site_url('/')?>">Home</a></li>
                   <li><a href='<?php echo site_url('minerals/map')?>'>Map</a></li>
-                  <li><a href='<?php echo site_url('minerals/sites')?>'>Sites</a></li>
+                  
+                  <li><a href='<?php echo site_url('minerals/Adresses')?>'>Adresses</a></li>
+                  <li><a href='<?php echo site_url('minerals/Acquisitions')?>'>Acquisitions</a></li>
+                  <li><a href='<?php echo site_url('minerals/Communes')?>'>Communes</a></li>
+                  <li><a href='<?php echo site_url('minerals/Departements')?>'>Departements</a></li>
+                  <li><a href='<?php echo site_url('minerals/Echanges')?>'>Echanges</a></li>
+                  <li><a href='<?php echo site_url('minerals/Echantillons')?>'>Echantillons</a></li>
+                  <li><a href='<?php echo site_url('minerals/Etats')?>'>Etats</a></li>
+                  <li><a href='<?php echo site_url('minerals/Manifestations')?>'>Manifestations</a></li>
+                   <li><a href='<?php echo site_url('minerals/Mineraux')?>'>Mineraux</a></li>
+                   <li><a href='<?php echo site_url('minerals/Pays')?>'>Pays</a></li>
+                   <li><a href='<?php echo site_url('minerals/Personnes')?>'>Personnes</a></li>
+                   <li><a href='<?php echo site_url('minerals/Regions')?>'>Regions</a></li><br />
+                   <li><a href='<?php echo site_url('minerals/sites')?>'>Sites</a></li>
+                   <li><a href='<?php echo site_url('minerals/SitesGeoLocalisation')?>'>SitesGeoLocalisation</a></li>
+                   <li><a href='<?php echo site_url('minerals/SortiesCollection')?>'>SortiesCollection</a></li>
+                   <li><a href='<?php echo site_url('minerals/SortiesSurTerrain')?>'>SortiesSurTerrain</a></li>
+                   
                   <li><a href='<?php echo site_url('map_endpoints/test')?>'>A test endpoint</a></li>
 
               </ul>

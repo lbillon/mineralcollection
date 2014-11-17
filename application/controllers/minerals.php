@@ -27,16 +27,235 @@ class Minerals extends CI_Controller {
         $this->_do_output((object)array('output' => $this->load->view('map.html','',true) , 'js_files' => array() , 'css_files' => array()));
     }
 
+	public function Acquisitions()
+    {
+    	try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Acquisitions');
+        	$crud->set_relation('EchantillonId','Echantillons','Titre');
+			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+    }
+	
+	public function Adresses(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Adresses');
+        	
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+	
+	public function Communes(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Communes');
+        	$crud->set_relation('DepartementId','Departements','DepartementNCCENR');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+	
+	public function Departements(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Departements');
+        	$crud->set_relation('RegionId','Regions','RegionNCCENR');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+	
+	public function Echanges(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Echanges');
+        	$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+	
+	public function Echantillons(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Echantillons')
+        	->set_relation('PersonneId','Personnes','PersonneMoraleNom')
+			->set_relation('RegionId','Regions','RegionNCCENR')
+			->set_relation('DepartementId','Departements','DepartementNCCENR')
+			->set_relation('SortieId','SortiesCollection','SortiePrecision')
+			->set_relation('SiteId','Sites','SiteNom')
+			->set_relation('CommuneId', 'Communes', 'CommuneNCCENR')
+			->set_relation('EtatId','Etats','EtatNom');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+
+public function Etats(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Etats');
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+	
+		public function Manifestations(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Manifestations')
+        		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+		
+		public function Mineraux(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Mineraux');
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+
+		public function Pays(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Pays');
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+		
+		public function Personnes(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Personnes');
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+		
+		public function Regions(){
+		try{
+			$crud = new grocery_CRUD();
+        	$crud->set_table('Regions')
+        		 ->set_relation('EtatId', 'Etats', 'EtatNom');
+			
+		
+    	    $output = $crud->render();
+ 
+        	$this->_do_output($output);
+			      
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}  
+		
+	}
+		
 	public function sites()
 	{
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_theme('datatables');
-			$crud->set_table('Sites');
-			$crud->set_subject('Site');
-			$crud->display_as('CommuneId','Commune');
-			$crud->set_relation('CommuneId','Communes','CommuneNCCENR');
+			$crud->set_theme('datatables')
+			->set_table('Sites')
+			->set_subject('Site')
+			->display_as('CommuneId','Commune')
+			->set_relation('CommuneId','Communes','CommuneNCCENR');
+
+
+			$output = $crud->render();
+
+			$this->_do_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+	
+	public function SitesGeoLocalisation()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_table('SitesGeoLocalisation')
+			->set_relation('SiteId','Sites','SiteNom');
 
 
 			$output = $crud->render();
@@ -48,5 +267,42 @@ class Minerals extends CI_Controller {
 		}
 	}
 
+	public function SortiesCollection()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_table('SortiesCollection')
+			->set_relation('EchantillonId','Echantillons','Titre')
+			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+
+
+			$output = $crud->render();
+
+			$this->_do_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
+
+public function SortiesSurTerrain()
+	{
+		try{
+			$crud = new grocery_CRUD();
+
+			$crud->set_table('SortiesSurTerrain')
+			->set_relation('SiteId','Sites','SiteNom')
+			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+
+
+			$output = $crud->render();
+
+			$this->_do_output($output);
+
+		}catch(Exception $e){
+			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+		}
+	}
 
 }
