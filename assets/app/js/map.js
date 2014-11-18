@@ -8,7 +8,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
         });
     }])
     
-    .controller("map",['$scope', 'GoogleMapApi'.ns(), function ($scope, GoogleMapApi) {
+    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', function ($scope, GoogleMapApi, $http) {
 
 			$scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 
@@ -18,6 +18,22 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
         *   @pram: maps = google.maps
         */
         GoogleMapApi.then(function(maps) {
-
+				// map loaded				
+				
+				
         });
+        
+			$scope.query = "SELECT * FROM sites WHERE 1;";        
+        
+        $scope.execute = function () {
+		
+					$http.post('/mineralcollection/index.php/map_endpoints/querySearch', {query:angular.copy($scope.query)}).
+  						success(function(data, status, headers, config) {
+    						console.log(data);
+    					}).
+    					error(function(data, status, headers, config) {
+							
+  						});
+						
+			}
     }]);
