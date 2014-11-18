@@ -31,42 +31,48 @@ class Map_endpoints extends CI_Controller
         $arr["msg"] = "";
         $arr["result"] = array();
 
-        //Concatenate
-        $fullQueryString = $_GET["selectPart"].' '.$_GET["fromPart"].' '.$_GET["wherePart"];
-
-        //Run Query
-        $query = $this->db->query($fullQueryString);
-
-        //Catch errors
-        $error = $this->db->_error_message();
-
-        if($error!="") //An error occured
+        if(!isset($_POST["query"]))
         {
-            $arr["error"]=true;
-            $arr["msg"]=$error;
+            $arr["msg"] = "No query sent";
         }
-        else //no error
+        else
         {
-            if($query->num_rows()>0)
+            $queryString = $_POST["query"];
+
+            //Run Query
+            $query = $this->db->query($queryString);
+
+            //Catch errors
+            $error = $this->db->_error_message();
+
+            if($error!="") //An error occured
             {
-                foreach ($query->result() as $row) {
-                    $currentObject = array();
-                    $currentObject["id"] = $row->SiteId;
-                    $currentObject["name"] = $row->SiteNom;
-                    $currentObject["description"] = $row->SiteDescrGen;
-                    $currentObject["type"] = $row->SiteType;
-                    // $currentObject["lon"] = $row->SiteLon;
-                    // $currentObject["lat"] = $row->SiteLat;
-
-                    $arr["result"][]=$currentObject;
-                }
-
+                $arr["error"]=true;
+                $arr["msg"]=$error;
             }
+            else //no error
+            {
+                if($query->num_rows()>0)
+                {
+                    foreach ($query->result() as $row) {
+                        $currentObject = array();
+                        $currentObject["id"] = $row->SiteId;
+                        $currentObject["name"] = $row->SiteNom;
+                        $currentObject["description"] = $row->SiteDescrGen;
+                        $currentObject["type"] = $row->SiteType;
+                        // $currentObject["lon"] = $row->SiteLon;
+                        // $currentObject["lat"] = $row->SiteLat;
+
+                        $arr["result"][]=$currentObject;
+                    }
+
+                }
+            }            
         }
 
-
-        return json_encode($arr);
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($arr));
     }
-
 
 }
