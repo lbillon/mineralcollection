@@ -54,14 +54,13 @@ class Map_endpoints extends CI_Controller
             {
                 if($query->num_rows()>0)
                 {
+                    $fieldsArray = $query->list_fields();
                     foreach ($query->result() as $row) {
                         $currentObject = array();
-                        $currentObject["id"] = $row->SiteId;
-                        $currentObject["name"] = $row->SiteNom;
-                        $currentObject["description"] = $row->SiteDescrGen;
-                        $currentObject["type"] = $row->SiteType;
-                        // $currentObject["lon"] = $row->SiteLon;
-                        // $currentObject["lat"] = $row->SiteLat;
+
+                        foreach ($fieldsArray as $field) {
+                            $currentObject[$field] = $row->$field;
+                        }
 
                         $arr["result"][]=$currentObject;
                     }
