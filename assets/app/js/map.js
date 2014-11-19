@@ -1,4 +1,4 @@
-angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
+angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()])
 
     .config(['GoogleMapApiProvider'.ns(), function (GoogleMapApi) {
         GoogleMapApi.configure({
@@ -8,9 +8,20 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
         });
     }])
     
-    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', function ($scope, GoogleMapApi, $http) {
+    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage) {
 
-			$scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+			$scope._={};
+
+			if (!Date.now) {
+    			Date.now = function() { return new Date().getTime(); };
+			}
+
+			$scope.$storage = $localStorage.$default({
+    			archive: []
+			});
+			
+			
+			$scope.map = { center: { latitude: 45.4, longitude: 2.1 }, zoom: 5 };
 
         /*
         * GoogleMapApi is a promise with a
@@ -22,6 +33,78 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
 				
 				
         });
+// _.archive_btn
+
+       	$scope.$watch('_.archive_btn', function (val){
+    			if (val) {
+    				$(".s-right").hide();
+    				$(".s-right").css( "opacity", 0 );
+  					$( ".s-left" ).animate({
+    					width: "100%"
+  					}, 200, function() {
+  
+  					});   			
+    			} else {
+    				$( ".s-left" ).animate({
+    					width: "50%"
+  					}, 200, function() {
+  						$( ".s-right" ).show();
+						$( ".s-right" ).animate({
+    						opacity: "1"
+  						}, 150, function() {
+  
+  						});  
+  
+  					});
+    				
+  					
+    			}
+		 	});
+        
+        	$scope._.archive_btn=true;
+			
+			$scope.loadQuery = function () {
+				
+				angular.forEach($scope.$storage.archive, function (value, key) {
+					if (value.id === $scope._.archive_selected) {
+						$scope.query = value.query;		
+					}
+				});
+				delete $scope._.archive_selected;
+			
+			}			
+			
+			
+			$scope.save = function () {
+				var entry = {
+					id: Date.now(),
+					name: $scope._.save_name,
+					query: $scope.query	
+				};		
+				
+				var ok = true;				
+				
+				angular.forEach($scope.$storage.archive, function (value, key) {
+					if (value.name === entry.name) {
+						ok = false;
+						alert("Entry with name '"+entry.name+"' already exists!");					
+					} else if (value.query === entry.query) {
+						ok = false;
+						alert("Entry with your query already exists!");
+					}
+				});
+				
+				if (ok) {
+					$scope.$storage.archive.push(entry);				
+				}				
+					
+			}        
+        
+			$scope.zoomto = function (el) {
+				if (el.longitude && el.latitude) {
+					$scope.map = { center: { latitude: el.latitude, longitude: el.longitude }, zoom: 10 };			
+				}
+			}        
         
 			$scope.query = "SELECT s.SiteId as id, s.SiteNom name, s.SiteDescrGen as description, c.longitude as longitude, c.latitude as latitude FROM Sites s, Communes c WHERE s.CommuneId=c.CommuneId";        
         
