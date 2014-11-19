@@ -23,17 +23,29 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'google-maps'.ns()])
 				
         });
         
-			$scope.query = "SELECT * FROM sites WHERE 1;";        
+			$scope.query = "SELECT s.SiteId as id, s.SiteNom name, s.SiteDescrGen as description, c.longitude as longitude, c.latitude as latitude FROM Sites s, Communes c WHERE s.CommuneId=c.CommuneId";        
         
         $scope.execute = function () {
+        	
+        			var post = $.param({query:angular.copy($scope.query)});
 		
-					$http.post('/mineralcollection/index.php/map_endpoints/querySearch', {query:angular.copy($scope.query)}).
+					$http.post('/mineralcollection/index.php/map_endpoints/querySearch', post, {
+							headers : {
+								'Content-Type': 'application/x-www-form-urlencoded'
+							}
+						}).
   						success(function(data, status, headers, config) {
-    						console.log(data);
+							if (!data.error) {
+								$scope.data = data.result;
+							} else {
+								alert(data.msg);							
+							}
+    						
     					}).
     					error(function(data, status, headers, config) {
 							
   						});
+               
 						
 			}
     }]);
