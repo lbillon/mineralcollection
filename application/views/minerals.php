@@ -17,24 +17,7 @@
       <?php foreach($js_files as $file): ?>
           <script src="<?php echo $file; ?>"></script>
       <?php endforeach; ?>
-      <style type='text/css'>
-          body
-          {
-              font-family: Arial;
-              font-size: 14px;
-          }
-          a {
-              color: blue;
-              text-decoration: none;
-              font-size: 14px;
-          }
-          a:hover
-          {
-              text-decoration: underline;
-          }
-          
-			.angular-google-map-container { height: 600px; }
-      </style>
+      <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>app/css/app.css" />
   </head>
   <body>
   <nav class="navbar navbar-default" role="navigation">
@@ -97,6 +80,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
+    <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
    
     <script src="<?php echo asset_url(); ?>app/js/lodash.min.js"></script>
     <script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.7/dist/angular-google-maps.min.js"></script>
