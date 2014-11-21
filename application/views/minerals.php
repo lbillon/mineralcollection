@@ -72,8 +72,6 @@
                                   <li><a href='<?php echo site_url('minerals/SortiesCollection')?>'>SortiesCollection</a></li>
                                   <li><a href='<?php echo site_url('minerals/SortiesSurTerrain')?>'>SortiesSurTerrain</a></li>
                    </ul>
-                  <li><a href='<?php echo site_url('map_endpoints/test')?>'>A test endpoint</a></li>
-
               </ul>
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="#">GSE 2014</a></li>

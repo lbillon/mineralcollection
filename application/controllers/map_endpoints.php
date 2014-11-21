@@ -13,15 +13,16 @@ class Map_endpoints extends CI_Controller
         $this->load->library('grocery_CRUD');
     }
 
-
-    public function test()
+    //Function used in order to allow only SELECT queries
+    private function QueryValidation($querySource)
     {
-        $arr = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+        $result = true;
 
-            //add the header here
-            header('Content-Type: application/json');
-            echo json_encode($arr);
+        $query = strtolower(trim($querySource));
+        if(substr($query,0,6) != "select")
+            $result = false;
 
+        return $result;
     }
 
     public function querySearch()
@@ -38,35 +39,45 @@ class Map_endpoints extends CI_Controller
         else
         {
             $queryString = $_POST["query"];
-
-            //Run Query
-            $query = $this->db->query($queryString);
-
-            //Catch errors
-            $error = $this->db->_error_message();
-
-            if($error!="") //An error occured
+            $isValid = $this->QueryValidation($queryString);
+            
+            if($isValid)
             {
-                $arr["error"]=true;
-                $arr["msg"]=$error;
-            }
-            else //no error
-            {
-                if($query->num_rows()>0)
+                //Run Query
+                $query = $this->db->query($queryString);
+
+                //Catch errors
+                $error = $this->db->_error_message();
+
+                if($error!="") //An error occured
                 {
-                    $fieldsArray = $query->list_fields();
-                    foreach ($query->result() as $row) {
-                        $currentObject = array();
+                    $arr["error"]=true;
+                    $arr["msg"]=$error;
+                }
+                else //no error
+                {
+                    if($query->num_rows()>0)
+                    {
+                        $fieldsArray = $query->list_fields();
+                        foreach ($query->result() as $row) {
+                            $currentObject = array();
 
-                        foreach ($fieldsArray as $field) {
-                            $currentObject[$field] = $row->$field;
+                            foreach ($fieldsArray as $field) {
+                                $currentObject[$field] = $row->$field;
+                            }
+
+                            $arr["result"][]=$currentObject;
                         }
 
-                        $arr["result"][]=$currentObject;
                     }
+                }         
+            }
+            else
+            {
+                $arr["error"]=true;
+                $arr["msg"]="Query not allowed"; 
+            }
 
-                }
-            }            
         }
 
         $this->output
