@@ -1768,7 +1768,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function showAddForm()
 	{
 		$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
-
+		// Getting subject to display on the form
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
 
@@ -1782,7 +1782,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_back_to_list	= $this->unset_back_to_list;
 		$data->unique_hash			= $this->get_method_hash();
 		$data->is_ajax 			= $this->_is_ajax();
-
+		
+		 //* Added by Hafiz Saqib Javed for Parent add form from child add form */
+		$data->parent_add_form = $this->parent_add_form;
+		
 		$this->_theme_view('add.php',$data);
 		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
 
@@ -3355,6 +3358,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $_unique_fields 			= array();
 	protected $validation_rules		= array();
 	protected $relation				= array();
+	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
+	protected $parent_add_form		= array();
+	
 	protected $relation_n_n			= array();
 	protected $upload_fields		= array();
 	protected $actions				= array();
@@ -4888,6 +4894,19 @@ class Grocery_CRUD extends grocery_CRUD_States
 	public function set_relation($field_name , $related_table, $related_title_field, $where_clause = null, $order_by = null)
 	{
 		$this->relation[$field_name] = array($field_name, $related_table,$related_title_field, $where_clause, $order_by);
+		return $this;
+	}
+	
+	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
+	/**
+	 *
+	 * Set a simple 1-n foreign key relation
+	 * @param string $field_name
+	 * @param string $url
+	 */
+	public function set_parent_add_form($field_name , $url)
+	{
+		$this->parent_add_form[$field_name] = array($field_name, $url);
 		return $this;
 	}
 

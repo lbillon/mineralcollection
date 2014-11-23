@@ -31,9 +31,12 @@ class Minerals extends CI_Controller {
     {
     	try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Acquisitions');
+        	$crud->set_table('acquisitions');
         	$crud->set_relation('EchantillonId','Echantillons','Titre');
 			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+			
+			$crud->set_parent_add_form('EchantillonId','/index.php/minerals/Echantillons/add');
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add');
 		
     	    $output = $crud->render();
  
@@ -47,7 +50,7 @@ class Minerals extends CI_Controller {
 	public function Adresses(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Adresses');
+        	$crud->set_table('adresses');
         	
 		
     	    $output = $crud->render();
@@ -63,7 +66,7 @@ class Minerals extends CI_Controller {
 	public function Communes(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Communes');
+        	$crud->set_table('communes');
         	$crud->set_relation('DepartementId','Departements','DepartementNCCENR');
 			
 		
@@ -80,7 +83,7 @@ class Minerals extends CI_Controller {
 	public function Departements(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Departements');
+        	$crud->set_table('departements');
         	$crud->set_relation('RegionId','Regions','RegionNCCENR');
 			
 		
@@ -97,7 +100,7 @@ class Minerals extends CI_Controller {
 	public function Echanges(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Echanges');
+        	$crud->set_table('echanges');
         	$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 			
 		
@@ -114,7 +117,7 @@ class Minerals extends CI_Controller {
 	public function Echantillons(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Echantillons')
+        	$crud->set_table('echantillons')
         	->set_relation('PersonneId','Personnes','PersonneMoraleNom')
 			->set_relation('RegionId','Regions','RegionNCCENR')
 			->set_relation('DepartementId','Departements','DepartementNCCENR')
@@ -137,7 +140,7 @@ class Minerals extends CI_Controller {
 public function Etats(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Etats');
+        	$crud->set_table('etats');
 		
     	    $output = $crud->render();
  
@@ -152,7 +155,7 @@ public function Etats(){
 		public function Manifestations(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Manifestations')
+        	$crud->set_table('manifestations')
         		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
 			
 		
@@ -169,7 +172,7 @@ public function Etats(){
 		public function Mineraux(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Mineraux');
+        	$crud->set_table('mineraux');
 		
     	    $output = $crud->render();
  
@@ -184,7 +187,7 @@ public function Etats(){
 		public function Pays(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Pays');
+        	$crud->set_table('pays');
 		
     	    $output = $crud->render();
  
@@ -199,7 +202,7 @@ public function Etats(){
 		public function Personnes(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Personnes');
+        	$crud->set_table('personnes');
 		
     	    $output = $crud->render();
  
@@ -214,7 +217,7 @@ public function Etats(){
 		public function Regions(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Regions')
+        	$crud->set_table('regions')
         		 ->set_relation('EtatId', 'Etats', 'EtatNom');
 			
 		
@@ -254,7 +257,7 @@ public function Etats(){
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_table('SitesGeoLocalisation')
+			$crud->set_table('sitesGeoLocalisation')
 			->set_relation('SiteId','Sites','SiteNom');
 
 
@@ -272,7 +275,7 @@ public function Etats(){
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_table('SortiesCollection')
+			$crud->set_table('sortiesCollection')
 			->set_relation('EchantillonId','Echantillons','Titre')
 			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 
@@ -291,7 +294,7 @@ public function SortiesSurTerrain()
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_table('SortiesSurTerrain')
+			$crud->set_table('sortiesSurTerrain')
 			->set_relation('SiteId','Sites','SiteNom')
 			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 

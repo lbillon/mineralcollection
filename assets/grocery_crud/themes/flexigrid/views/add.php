@@ -6,7 +6,9 @@
 
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
+	
 ?>
+
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
 		<div class="ftitle">
@@ -28,14 +30,23 @@
 				{
 					$even_odd = $counter % 2 == 0 ? 'odd' : 'even';
 					$counter++;
+					
 			?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""; ?> :
 				</div>
 				<div class='form-input-box' id="<?php echo $field->field_name; ?>_input_box">
-					<?php echo $input_fields[$field->field_name]->input?>
+					<?php echo $input_fields[$field->field_name]->input?> 
+					<?php if(isset($parent_add_form[$field->field_name])){ ?>
+				<div class="fbutton" style="float: right; margin-left: 20px;">
+					<span class="add"><a class="fancybox fancybox.iframe" href="<?=$parent_add_form[$field->field_name][1]?>">Add <?=$field->field_name;?> </a></span>
 				</div>
+			
+					<?php }
+					?>
+				</div>
+				
 				<div class='clear'></div>
 			</div>
 			<?php }?>
