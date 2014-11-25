@@ -14,7 +14,11 @@ class Minerals extends CI_Controller {
 
 	public function _do_output($output = null)
 	{
-		$this->load->view('minerals.php',$output);
+		if($this->input->get('add', TRUE)){
+			$this->load->view('minerals_add.php',$output);	
+		}else{
+			$this->load->view('minerals.php',$output);			
+		}
 	}
 
     public function index()
@@ -35,8 +39,8 @@ class Minerals extends CI_Controller {
         	$crud->set_relation('EchantillonId','Echantillons','Titre');
 			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 			
-			$crud->set_parent_add_form('EchantillonId','/index.php/minerals/Echantillons/add');
-			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add');
+			$crud->set_parent_add_form('EchantillonId','/index.php/minerals/Echantillons/add?add=true');
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -52,7 +56,6 @@ class Minerals extends CI_Controller {
 			$crud = new grocery_CRUD();
         	$crud->set_table('adresses');
         	
-		
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -68,7 +71,8 @@ class Minerals extends CI_Controller {
 			$crud = new grocery_CRUD();
         	$crud->set_table('communes');
         	$crud->set_relation('DepartementId','Departements','DepartementNCCENR');
-			
+		
+			$crud->set_parent_add_form('DepartementId','/index.php/minerals/Departements/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -86,6 +90,7 @@ class Minerals extends CI_Controller {
         	$crud->set_table('departements');
         	$crud->set_relation('RegionId','Regions','RegionNCCENR');
 			
+			$crud->set_parent_add_form('RegionId','/index.php/minerals/Regions/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -103,6 +108,7 @@ class Minerals extends CI_Controller {
         	$crud->set_table('echanges');
         	$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 			
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -126,6 +132,13 @@ class Minerals extends CI_Controller {
 			->set_relation('CommuneId', 'Communes', 'CommuneNCCENR')
 			->set_relation('EtatId','Etats','EtatNom');
 			
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
+			$crud->set_parent_add_form('RegionId','/index.php/minerals/Regions/add?add=true');
+			$crud->set_parent_add_form('DepartementId','/index.php/minerals/Departements/add?add=true');
+			$crud->set_parent_add_form('SortieId','/index.php/minerals/SortiesCollection/add?add=true');
+			$crud->set_parent_add_form('SiteId','/index.php/minerals/Sites/add?add=true');
+			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');
+			$crud->set_parent_add_form('EtatId','/index.php/minerals/Etats/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -158,6 +171,7 @@ public function Etats(){
         	$crud->set_table('manifestations')
         		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
 			
+			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');
 		
     	    $output = $crud->render();
  
@@ -219,7 +233,8 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('regions')
         		 ->set_relation('EtatId', 'Etats', 'EtatNom');
-			
+		
+			$crud->set_parent_add_form('EtatId','/index.php/minerals/Etats/add?add=true');	
 		
     	    $output = $crud->render();
  
@@ -237,11 +252,12 @@ public function Etats(){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables')
-			->set_table('Sites')
+			->set_table('sites')
 			->set_subject('Site')
 			->display_as('CommuneId','Commune')
 			->set_relation('CommuneId','Communes','CommuneNCCENR');
 
+			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');	
 
 			$output = $crud->render();
 
@@ -260,6 +276,7 @@ public function Etats(){
 			$crud->set_table('sitesGeoLocalisation')
 			->set_relation('SiteId','Sites','SiteNom');
 
+			$crud->set_parent_add_form('SiteId','/index.php/minerals/Sites/add?add=true');	
 
 			$output = $crud->render();
 
@@ -279,6 +296,8 @@ public function Etats(){
 			->set_relation('EchantillonId','Echantillons','Titre')
 			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 
+			$crud->set_parent_add_form('EchantillonId','/index.php/minerals/Echantillons/add?add=true');
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 
 			$output = $crud->render();
 
@@ -298,6 +317,8 @@ public function SortiesSurTerrain()
 			->set_relation('SiteId','Sites','SiteNom')
 			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 
+			$crud->set_parent_add_form('SiteId','/index.php/minerals/Sites/add?add=true');
+			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 
 			$output = $crud->render();
 
