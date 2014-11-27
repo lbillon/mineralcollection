@@ -1,11 +1,11 @@
 <div ng-app="app" ng-controller="map" ng-cloak>
-	<div class="col-md-7">
+	<div class="col-md-12">
     	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
 			<ui-gmap-markers models="data" coords="'self'" icon="'icon'">
         	</ui-gmap-markers>    	
     	</ui-gmap-google-map>
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-5" style="position: absolute;">
 	
 	<div class="search-top-menu">
 		<div class="btn-archive" ng-class="{active:!_.archive_btn}" ng-click="_.archive_btn=!_.archive_btn">Archive</div>	
@@ -38,3 +38,6 @@ ng-model="_.save_name"/>
 	</div>
 
 </div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

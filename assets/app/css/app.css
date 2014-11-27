@@ -11,6 +11,14 @@ a:hover {
 	text-decoration: underline;
 }
 
+nav.navbar {
+	margin-bottom: 0!important;
+}
+
+.col-md-12 {
+	padding: 0!important;
+}
+
 .angular-google-map-container { height: 600px; }
 
 ul.saved-list {
