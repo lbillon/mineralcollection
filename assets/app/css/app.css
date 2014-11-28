@@ -13,13 +13,19 @@ a:hover {
 
 nav.navbar {
 	margin-bottom: 0!important;
+	-webkit-box-shadow: 0px 5px 15px #e7e7e7;
+	-moz-box-shadow: 0px 5px 15px #e7e7e7;
+	box-shadow: 0px 5px 15px #e7e7e7;
 }
 
-.col-md-12 {
-	padding: 0!important;
-}
+/* .angular-google-map-container { height: 600px; } */
 
-.angular-google-map-container { height: 600px; }
+.search-map-overlay {
+	position: absolute;	
+	background: white;
+	top: 70px;
+	left: 100px;
+}
 
 ul.saved-list {
 	list-style-type: none;
@@ -31,7 +37,7 @@ ul.saved-list {
 
 ul.data-list {
 	list-style-type: none;
-	height: 350px;
+	height: 145px;
 	width: 100%;
 	overflow-y:scroll;
 	padding-left: 0;
@@ -51,6 +57,12 @@ ul.data-list li:hover {
 	background: #F0F0FF;
 }
 
+input.data-list-filter {
+	padding: 3px;
+	margin: 0 10px 5px 10px;
+	width: 350px;
+}
+
 .btn-submit-query {
 	width: 100%;
 }
@@ -58,7 +70,6 @@ ul.data-list li:hover {
 .s-left {
 	float: left;
 	display: inline;
-	width: 50%;
 	height: 200px;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -72,7 +83,6 @@ ul.data-list li:hover {
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 10px;
-	background: whitesmoke;
 }
 
 .s-right select option {
@@ -80,7 +90,7 @@ ul.data-list li:hover {
 }
 
 .btn-save-query {
-	width: 100%;
+	width: 49%;
 	margin-top: 5px;
 }
 
@@ -102,7 +112,7 @@ ul.data-list li:hover {
 
 .search-wrapper {
 	margin-bottom: 10px;
-	height: 220px;
+	height: 198px;
 }
 
 .btn-archive.active {

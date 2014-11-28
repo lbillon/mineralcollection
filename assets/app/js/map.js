@@ -8,7 +8,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
         });
     }])
     
-    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage) {
+    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage ) {
 
 			$scope._={};
 
@@ -22,6 +22,18 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 			
 			
 			$scope.map = { center: { latitude: 45.4, longitude: 2.1 }, zoom: 5 };
+			
+			$scope.markerClicked = function () {
+				console.log(this);
+				
+				/*
+var onMarkerClicked = function (marker) {
+    marker.showWindow = true;
+    $scope.$apply();
+    //window.alert("Marker: lat: " + marker.latitude + ", lon: " + marker.longitude + " clicked!!")
+  };				
+				*/			
+			}
 
         /*
         * GoogleMapApi is a promise with a
@@ -30,9 +42,59 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
         */
         GoogleMapApi.then(function(maps) {
 				// map loaded				
-				
+
+    			var height = window.innerHeight - 52;
+       		$('.angular-google-map-container').css( "height", height+"px" );
+
 				
         });
+
+
+		  $(window).resize(function(){
+    			//alert(window.innerWidth);
+
+    			$scope.$apply(function(){
+    				var height = window.innerHeight - 52;
+       			$('.angular-google-map-container').css( "height", height+"px" );
+    			});
+		  });        
+        
+        
+		  $scope.mouseEnter = function () {
+		  	
+					$( ".search-map-overlay" ).animate({
+    					opacity: 1
+  					}, 100, function() {
+  
+  					});		  	
+		  	
+		  			$(".data-list-wrapper").show();
+  					$( ".data-list-wrapper" ).animate({
+    					height: "185px",
+    					opacity: 1
+  					}, 200, function() {
+  
+  					});
+		  }       
+		  
+		  $scope.mouseLeave = function () {
+		  	
+		  			$( ".search-map-overlay" ).animate({
+    					opacity: 0.75
+  					}, 100, function() {
+  
+  					});	
+		  			
+  					$( ".data-list-wrapper" ).animate({
+    					height: "0px",
+    					opacity: 0
+  					}, 200, function() {
+  						$(".data-list-wrapper").hide();
+  					});
+		  }   
+        
+        
+        
 // _.archive_btn
 
        	$scope.$watch('_.archive_btn', function (val){
@@ -40,10 +102,11 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
     				$(".s-right").hide();
     				$(".s-right").css( "opacity", 0 );
   					$( ".s-left" ).animate({
-    					width: "100%"
+    					width: "370px"
   					}, 200, function() {
   
-  					});   			
+  					});   
+  					delete $scope._.archive_selected;			
     			} else {
     				$( ".s-left" ).animate({
     					width: "50%"
@@ -70,10 +133,26 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 						$scope.query = value.query;		
 					}
 				});
-				delete $scope._.archive_selected;
+						
 			
 			}			
 			
+			$scope.delete = function (id) {
+
+				var i = null;
+				angular.forEach($scope.$storage.archive, function (value, index) {
+		
+					if (value.id === id) {
+						i = index;
+					}
+					
+				});	
+				
+				if (i!==null) {
+					$scope.$storage.archive.splice(i, 1);				
+				}		
+						
+			}
 			
 			$scope.save = function () {
 				var entry = {
@@ -95,21 +174,60 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 				});
 				
 				if (ok) {
-					$scope.$storage.archive.push(entry);				
+					$scope.$storage.archive.push(entry);	
+					$scope._.save_name = null;			
 				}				
 					
 			}        
         
+			function muteAnimations() {
+				angular.forEach($scope.data, function (value, index) {
+					if (value.options.animation === 1) {
+						value.options.animation = 0;
+						value.options.labelContent = "";
+					}
+				});
+			}        
+        
 			$scope.zoomto = function (el) {
 				if (el.longitude && el.latitude) {
-					$scope.map = { center: { latitude: el.latitude, longitude: el.longitude }, zoom: 10 };			
+					$scope.map = { center: { latitude: el.latitude, longitude: el.longitude }, zoom: 10 };
+					
+					muteAnimations();					
+					el.options.animation = 1;	
+					el.options.labelContent = el.name;		
 				}
 			}        
         
 			$scope.query = "SELECT s.SiteId as id, s.SiteNom name, s.SiteDescrGen as description, c.longitude as longitude, c.latitude as latitude FROM Sites s, Communes c WHERE s.CommuneId=c.CommuneId";        
         
+
+			function modify(data) {			
+			
+				angular.forEach(data, function (value, index) {
+					value.onClick = function (marker) {
+						console.log(marker);
+						marker.showWindow = true;
+						$scope.$apply();
+					};
+					
+					value.options = {
+            		animation: 0,
+            		labelContent: '',
+            		labelAnchor: "22 0"
+            		//labelClass: "marker-labels"
+          		}
+				});	
+				
+				return data;
+			
+			}
+        
+        
         $scope.execute = function () {
-        	
+        			
+					$scope.data = [];        			
+        			
         			var post = $.param({query:angular.copy($scope.query)});
 		
 					$http.post('/mineralcollection/index.php/map_endpoints/querySearch', post, {
@@ -119,6 +237,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 						}).
   						success(function(data, status, headers, config) {
 							if (!data.error) {
+								var modified = modify(data.result);
 								$scope.data = data.result;
 							} else {
 								alert(data.msg);							
