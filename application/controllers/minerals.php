@@ -233,14 +233,22 @@ public function Etats(){
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_theme('datatables')
+			$crud
 			->set_table('Sites')
 			->set_subject('Site')
 			->display_as('CommuneId','Commune')
 			->set_relation('CommuneId','Communes','CommuneNCCENR');
 
 
-			$output = $crud->render();
+            $state = $crud->getState();
+
+            if($state=='edit'|| $state=='add') {
+                $crud->add_fields('pos');
+                $crud->callback_edit_field('pos', function () {
+                    return $this->load->view('location_picker.html', '', true);
+                });
+            }
+            $output = $crud->render();
 
 			$this->_do_output($output);
 
