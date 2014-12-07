@@ -23,18 +23,17 @@
 	<script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.js?v=2.1.5"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.css?v=2.1.5" media="screen" />
       
-  <script type="text/javascript">
+   <script type="text/javascript">
 	$(document).ready(function() {
 		$(".fancybox").fancybox();
 	});
 </script>
-  
+
   </head>
   <body>
   
   <div class="container-fluid">
       <div class="row">
-      	
          <?php echo $output; ?>
       </div>
   </div>
