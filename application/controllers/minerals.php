@@ -23,7 +23,8 @@ class Minerals extends CI_Controller {
 
     public function index()
     {
-        $this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array("/assets/grocery_crud/js/jquery-1.10.2.min.js") , 'css_files' => array()));
+        //$this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array("/assets/grocery_crud/js/jquery-1.10.2.min.js") , 'css_files' => array()));
+        $this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array() , 'css_files' => array()));
     }
 
     public function map()
