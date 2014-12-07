@@ -2,7 +2,7 @@
 
 class Minerals extends CI_Controller {
 
-	var $basePath = "/index.php/minerals/";
+	var $basePath = "/mineralcollection/index.php/minerals/";
 	public function __construct()
 	{
 		parent::__construct();
