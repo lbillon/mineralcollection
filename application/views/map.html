@@ -1,11 +1,19 @@
 <div ng-app="app" ng-controller="map" ng-cloak>
-	<div class="col-md-7">
+	<div class="col-md-12" style="padding: 0;">
     	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
-			<ui-gmap-markers models="data" coords="'self'" icon="'icon'">
-        	</ui-gmap-markers>    	
+
+			<!--ui-gmap-window show="selected.show" coords="selected.coords" ng-cloak>
+				<div>Name: {{selected.name}}</div>
+				<div>Description: {{selected.description}}</div>
+				<div>Link: <a ng-href="{{'/index.php/minerals/sites/read/'+selected.id}}" target="_blank"></a>{{selected.id}}</div>
+        	</ui-gmap-window-->    	
+    	
+			<ui-gmap-markers models="data" coords="'self'" icon="'icon'" click="'onClick'" options="'options'" fit='true'>
+        	</ui-gmap-markers>       	
     	</ui-gmap-google-map>
+    	
 	</div>
-	<div class="col-md-5">
+	<div class="search-map-overlay" ng-mouseenter="mouseEnter()" ng-mouseleave="mouseLeave()">
 	
 	<div class="search-top-menu">
 		<div class="btn-archive" ng-class="{active:!_.archive_btn}" ng-click="_.archive_btn=!_.archive_btn">Archive</div>	
@@ -28,13 +36,24 @@ ng-blur="_.save_select.background='white'"
 ng-model="_.save_name"/>
 
 <button class="btn btn-save-query" ng-click="save()" ng-disabled="!query||!_.save_name">Save</button>
+<button class="btn btn-save-query" ng-click="delete(_.archive_selected)" ng-disabled="!_.archive_selected">Delete</button>
 		</div>
 	</div>
 		
-   	<ul class="data-list">
-			<li ng-repeat="d in data" ng-class="{unactive: (!d.latitude||!d.longitude)}" ng-click="zoomto(d)">{{ d.name }}</li>
-   	</ul>
+		<div class="data-list-wrapper" ng-show="data.length>0">
+			<input type="text" ng-model="_.search_sub_filter" class="data-list-filter" placeholder="Filter sites by name"/>
+			<ul class="data-list">
+				<li ng-repeat="d in data | filter:_.search_sub_filter" ng-class="{unactive: (!d.latitude||!d.longitude)}" ng-click="zoomto(d)">
+				<div>{{ d.name }}</div>
+				<small>{{ d.description | limitTo : 50 }}...</small>
+				</li>
+   		</ul>
+		</div>
+   	
     	
 	</div>
 
 </div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

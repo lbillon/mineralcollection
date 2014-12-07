@@ -172,7 +172,7 @@ public function Etats(){
 		public function Manifestations(){
 		try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Eanifestations')
+        	$crud->set_table('Manifestations')
         		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
 			
 			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');
@@ -255,7 +255,7 @@ public function Etats(){
 		try{
 			$crud = new grocery_CRUD();
 
-			$crud->set_theme('datatables')
+			$crud
 			->set_table('Sites')
 			->set_subject('Site')
 			->display_as('CommuneId','Commune')
@@ -263,7 +263,16 @@ public function Etats(){
 
 			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');	
 			$crud->set_parent_add_form_label_field("SiteNom");
-			$output = $crud->render();
+
+            $state = $crud->getState();
+
+            if($state=='edit'|| $state=='add') {
+                $crud->add_fields('pos');
+                $crud->callback_edit_field('pos', function () {
+                    return $this->load->view('location_picker.html', '', true);
+                });
+            }
+            $output = $crud->render();
 
 			$this->_do_output($output);
 
