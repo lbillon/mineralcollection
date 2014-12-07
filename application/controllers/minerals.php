@@ -15,15 +15,20 @@ class Minerals extends CI_Controller {
 	public function _do_output($output = null)
 	{
 		if($this->input->get('add', TRUE)){
-			$this->load->view('minerals_add.php',$output);	
+			$this->load->view('minerals_add.php',$output);
 		}else{
 			$this->load->view('minerals.php',$output);			
 		}
 	}
 
+	private function _set_unset_back_to_list($crud){
+		if($this->input->get('add', TRUE)){
+			$crud->unset_back_to_list();
+		}
+	}
+	
     public function index()
     {
-        //$this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array("/assets/grocery_crud/js/jquery-1.10.2.min.js") , 'css_files' => array()));
         $this->_do_output((object)array('output' => $this->load->view('home.html','',true) , 'js_files' => array() , 'css_files' => array()));
     }
 
@@ -43,6 +48,7 @@ class Minerals extends CI_Controller {
 			$crud->set_parent_add_form('EchantillonId','/index.php/minerals/Echantillons/add?add=true');
 			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 		
+			$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -57,6 +63,7 @@ class Minerals extends CI_Controller {
 			$crud = new grocery_CRUD();
         	$crud->set_table('Adresses');
         	
+			$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -75,6 +82,7 @@ class Minerals extends CI_Controller {
 		
 			$crud->set_parent_add_form('DepartementId','/index.php/minerals/Departements/add?add=true');
 			$crud->set_parent_add_form_label_field("CommuneNCCENR");
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -95,6 +103,7 @@ class Minerals extends CI_Controller {
 		
 			$crud->set_parent_add_form_label_field("DepartementNCCENR");
 		
+		$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -113,6 +122,7 @@ class Minerals extends CI_Controller {
 			
 			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 		
+		$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -145,6 +155,7 @@ class Minerals extends CI_Controller {
 			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');
 			$crud->set_parent_add_form('EtatId','/index.php/minerals/Etats/add?add=true');
 		
+		$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -160,6 +171,8 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('Etats');
 			$crud->set_parent_add_form_label_field("EtatNom");
+    	    
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -177,6 +190,7 @@ public function Etats(){
         		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
 			
 			$crud->set_parent_add_form('CommuneId','/index.php/minerals/Communes/add?add=true');
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -192,6 +206,7 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('Mineraux');
 		
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -207,6 +222,7 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('Pays');
 		
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -223,6 +239,7 @@ public function Etats(){
         	$crud->set_table('Personnes');
 		
 		$crud->set_parent_add_form_label_field("PersonneMoraleNom");
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -241,6 +258,7 @@ public function Etats(){
 		
 			$crud->set_parent_add_form('EtatId','/index.php/minerals/Etats/add?add=true');	
 			$crud->set_parent_add_form_label_field("RegionNCCENR");
+    	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -273,6 +291,7 @@ public function Etats(){
                     return $this->load->view('location_picker.html', '', true);
                 });
             }
+            $this->_set_unset_back_to_list($crud);
             $output = $crud->render();
 
 			$this->_do_output($output);
@@ -292,6 +311,7 @@ public function Etats(){
 
 			$crud->set_parent_add_form('SiteId','/index.php/minerals/Sites/add?add=true');	
 
+			$this->_set_unset_back_to_list($crud);
 			$output = $crud->render();
 
 			$this->_do_output($output);
@@ -314,6 +334,7 @@ public function Etats(){
 			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 			
 			$crud->set_parent_add_form_label_field("SortiePrecision");
+			$this->_set_unset_back_to_list($crud);
 			$output = $crud->render();
 
 			$this->_do_output($output);
@@ -335,6 +356,7 @@ public function SortiesSurTerrain()
 			$crud->set_parent_add_form('SiteId','/index.php/minerals/Sites/add?add=true');
 			$crud->set_parent_add_form('PersonneId','/index.php/minerals/Personnes/add?add=true');
 
+			$this->_set_unset_back_to_list($crud);
 			$output = $crud->render();
 
 			$this->_do_output($output);

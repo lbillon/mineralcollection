@@ -19,7 +19,6 @@
       <?php endforeach; ?>
       <link type="text/css" rel="stylesheet" href="<?php echo asset_url(); ?>app/css/app.css" />
       
-    <script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/lib/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.js?v=2.1.5"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.css?v=2.1.5" media="screen" />
       

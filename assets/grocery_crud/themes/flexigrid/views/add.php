@@ -8,7 +8,6 @@
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
 	
 ?>
-<script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/lib/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.js?v=2.1.5"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 
@@ -27,7 +26,8 @@ function receiveNewParentValue(value){
 
 function receiveNewParentKey(key){
 	$("#"+selectedParent).prepend("<option value='"+key+"'>"+optionLabel+"</option>");
-	$("#"+selectedParent+" :nth-child(1)").prop('selected', true);  // Select first child
+	$("#"+selectedParent).val(key); // if you want it to be automatically selected
+	$("#"+selectedParent).trigger("liszt:updated");
 	selectedParent = "";
 	optionLabel = "";
 }

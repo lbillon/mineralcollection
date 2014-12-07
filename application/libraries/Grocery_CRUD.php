@@ -1893,7 +1893,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function insert_layout($insert_result = false)
 	{
-		var_dump($insert_result);
 		@ob_end_clean();
 		if($insert_result === false)
 		{
@@ -1901,7 +1900,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		}
 		else
 		{
-			$success_message = '<p>'.$this->l('insert_success_message');
+			// Updated string by Hafiz Saqib Javed to be able to send data back to parent and close fancy box
+			$success_message = "<script type='text/javascript'>parent.receiveNewParentKey({$insert_result});parent.$.fancybox.close();</script><p>".$this->l('insert_success_message');
 
 			if(!$this->unset_back_to_list && !empty($insert_result) && !$this->unset_edit)
 			{
@@ -1924,7 +1924,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 					'insert_primary_key' => $insert_result,
 					'success_message' => $success_message,
 					'success_list_url'	=> $this->getListSuccessUrl($insert_result)
-			))."</textarea><script type='text/javascript'>parent.receiveNewParentKey({$insert_result});parent.$.fancybox.close();</script>";
+			))."</textarea>";
 		}
 		$this->set_echo_and_die();
 	}
@@ -1932,7 +1932,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function validation_layout($validation_result)
 	{
 		@ob_end_clean();
-		echo "<textarea>".json_encode($validation_result)."</textarea>";
+		echo "<textarea>".json_encode($validation_result)."</textarea>a";
 		$this->set_echo_and_die();
 	}
 
