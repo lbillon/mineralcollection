@@ -6,7 +6,47 @@
 
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
+	
 ?>
+	<script type="text/javascript" src="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+<script type="application/javascript">
+// Added By Hafiz Saqib Javed to send newly added Value Label to Parent
+// ANd Parent methods to recieve and display
+var optionLabel = "";
+var selectedParent = "";
+function setNewParentId(parentId){
+	selectedParent = parentId;
+}
+
+function receiveNewParentValue(value){
+	optionLabel = value;
+}
+
+function receiveNewParentKey(key){
+	$("#"+selectedParent).prepend("<option value='"+key+"'>"+optionLabel+"</option>");
+	$("#"+selectedParent).val(key); // if you want it to be automatically selected
+	$("#"+selectedParent).trigger("liszt:updated");
+	selectedParent = "";
+	optionLabel = "";
+}
+
+function sendDataToParent(){
+	<?php if($parent_add_form_field!=null){ ?>
+		var entryLabel = $('#field-<?=$parent_add_form_field?>').val();
+		parent.receiveNewParentValue(entryLabel);
+		<?php 
+	}
+		?>
+	return true;
+}
+
+function sendKeyToParent(key){
+	parent.receiveNewParentKey(entryLabel);
+}
+</script>
+
 <div class="flexigrid crud-form" style='width: 100%;' data-unique-hash="<?php echo $unique_hash; ?>">
 	<div class="mDiv">
 		<div class="ftitle">
@@ -28,14 +68,23 @@
 				{
 					$even_odd = $counter % 2 == 0 ? 'odd' : 'even';
 					$counter++;
+					
 			?>
 			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""; ?> :
 				</div>
 				<div class='form-input-box' id="<?php echo $field->field_name; ?>_input_box">
-					<?php echo $input_fields[$field->field_name]->input?>
+					<?php echo $input_fields[$field->field_name]->input?> 
+					<?php if(isset($parent_add_form[$field->field_name])){ ?>
+				<div class="fbutton" style="float: right; margin-left: 20px;">
+					<span class="add"><a onclick="setNewParentId('<?="field-".$field->field_name?>');" class="fancybox fancybox.iframe" href="<?=$parent_add_form[$field->field_name][1]?>">Add <?=$field->field_name;?> </a></span>
 				</div>
+			
+					<?php }
+					?>
+				</div>
+				
 				<div class='clear'></div>
 			</div>
 			<?php }?>
@@ -53,7 +102,7 @@
 		</div>
 		<div class="pDiv">
 			<div class='form-button-box'>
-				<input id="form-button-save" type='submit' value='<?php echo $this->l('form_save'); ?>'  class="btn btn-large"/>
+				<input id="form-button-save" onclick="sendDataToParent();" type='submit' value='<?php echo $this->l('form_save'); ?>'  class="btn btn-large"/>
 			</div>
 <?php 	if(!$this->unset_back_to_list) { ?>
 			<div class='form-button-box'>
@@ -74,7 +123,6 @@
 <script>
 	var validation_url = '<?php echo $validation_url?>';
 	var list_url = '<?php echo $list_url?>';
-
 	var message_alert_add_form = "<?php echo $this->l('alert_add_form')?>";
 	var message_insert_error = "<?php echo $this->l('insert_error')?>";
 </script>

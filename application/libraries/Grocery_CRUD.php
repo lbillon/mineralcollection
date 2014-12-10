@@ -1768,7 +1768,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function showAddForm()
 	{
 		$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
-
+		// Getting subject to display on the form
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
 
@@ -1782,7 +1782,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_back_to_list	= $this->unset_back_to_list;
 		$data->unique_hash			= $this->get_method_hash();
 		$data->is_ajax 			= $this->_is_ajax();
-
+		
+		 //* Added by Hafiz Saqib Javed for Parent add form from child add form */
+		$data->parent_add_form = $this->parent_add_form;
+		$data->parent_add_form_field = $this->parent_add_form_field;
 		$this->_theme_view('add.php',$data);
 		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
 
@@ -1897,7 +1900,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		}
 		else
 		{
-			$success_message = '<p>'.$this->l('insert_success_message');
+			// Updated string by Hafiz Saqib Javed to be able to send data back to parent and close fancy box
+			$success_message = "<script type='text/javascript'>parent.receiveNewParentKey({$insert_result});parent.$.fancybox.close();</script><p>".$this->l('insert_success_message');
 
 			if(!$this->unset_back_to_list && !empty($insert_result) && !$this->unset_edit)
 			{
@@ -1928,7 +1932,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function validation_layout($validation_result)
 	{
 		@ob_end_clean();
-		echo "<textarea>".json_encode($validation_result)."</textarea>";
+		echo "<textarea>".json_encode($validation_result)."</textarea>a";
 		$this->set_echo_and_die();
 	}
 
@@ -2027,7 +2031,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function load_js_fancybox()
 	{
 		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.css');
-
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 	}
@@ -3355,6 +3358,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $_unique_fields 			= array();
 	protected $validation_rules		= array();
 	protected $relation				= array();
+	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
+	protected $parent_add_form		= array();
+	protected $parent_add_form_field = null;
 	protected $relation_n_n			= array();
 	protected $upload_fields		= array();
 	protected $actions				= array();
@@ -4334,7 +4340,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 					throw new Exception('This user is not allowed to do this operation', 14);
 					die();
 				}
-
+				
 				$state_info = $this->getStateInfo();
 				$insert_result = $this->db_insert($state_info);
 
@@ -4890,7 +4896,33 @@ class Grocery_CRUD extends grocery_CRUD_States
 		$this->relation[$field_name] = array($field_name, $related_table,$related_title_field, $where_clause, $order_by);
 		return $this;
 	}
-
+	
+	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
+	/**
+	 *
+	 * Set a simple 1-n foreign key relation
+	 * @param string $field_name
+	 * @param string $url
+	 */
+	public function set_parent_add_form($field_name , $url)
+	{
+		$this->parent_add_form[$field_name] = array($field_name, $url);
+		return $this;
+	}
+	
+	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
+	/**
+	 *
+	 * Set a simple 1-n foreign key relation
+	 * @param string $field_name
+	 * @param string $url
+	 */
+	public function set_parent_add_form_label_field($field_name)
+	{
+		$this->parent_add_form_field = $field_name; 
+	}
+	
+	
 	/**
 	 *
 	 * Sets a relation with n-n relationship.

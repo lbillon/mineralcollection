@@ -8,8 +8,7 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        
-    
+
       <?php
       foreach($css_files as $file): ?>
           <link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
@@ -70,7 +69,6 @@
   </div>
 
 
-    
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     
@@ -86,7 +84,12 @@
     
     <script src="<?php echo asset_url(); ?>app/js/map.js"></script>
     
+    <!-- Added By Hafiz Saqib Javed for fancy box display to add parent from child --> 
+    <script type="text/javascript">
+	$(document).ready(function() {
+		$(".fancybox").fancybox();
+	});
+</script>
     
-
   </body>
 </html>
