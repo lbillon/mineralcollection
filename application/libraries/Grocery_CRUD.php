@@ -235,7 +235,8 @@ class grocery_CRUD_Field_Types
 					'password',
 					'readonly',
 					'dropdown',
-					'multiselect'
+					'multiselect',
+                    'read_url'
 			);
 
 			if (in_array($real_type,$types_array)) {
@@ -2418,9 +2419,27 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		return $input;
 	}
 
+
+
+    protected function get_read_url_input($field_info, $value,$id)
+    {
+
+        $read_only_value = "&nbsp;";
+
+        if (!empty($value) && !is_array($value)) {
+            $read_only_value = $value;
+        } elseif (is_array($value)) {
+            $all_values = array_values($value);
+            $read_only_value = implode(", ",$all_values);
+        }
+
+        return '<div id="field-'.$field_info->name.'" class="readonly_label"><a href="../../'.$field_info->extras[1].'/read/'.$id.'">'.$read_only_value.'</a></div>';
+    }
+
 	protected function get_relation_input($field_info,$value)
 	{
-		$this->load_js_chosen();
+
+        $this->load_js_chosen();
 		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.chosen.config.js');
 
 		$ajax_limitation = 10000;
@@ -2466,11 +2485,14 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_relation_readonly_input($field_info,$value)
 	{
-		$options_array = $this->get_relation_array($field_info->extras);
+
+        $id= $value;
+        $options_array = $this->get_relation_array($field_info->extras);
 
 		$value = isset($options_array[$value]) ? $options_array[$value] : '';
 
-		return $this->get_readonly_input($field_info, $value);
+
+		return $this->get_read_url_input($field_info, $value,$id);
 	}
 
 	protected function get_upload_file_readonly_input($field_info,$value)
@@ -2739,7 +2761,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_read_input_fields($field_values = null)
 	{
-		$fields = $this->get_edit_fields();
+        $fields = $this->get_edit_fields();
 		$this->field_types = null;
 		$this->required_fields = null;
 
@@ -2747,8 +2769,12 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			if (!empty($this->change_field_type)
 					&& isset($this->change_field_type[$field->field_name])
 					&& $this->change_field_type[$field->field_name]->type == 'hidden') {
+
 				continue;
 			}
+
+
+
 			$this->field_type($field->field_name, 'readonly');
 		}
 
