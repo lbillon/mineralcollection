@@ -1,3 +1,22 @@
+var markers = 
+    {
+        "Ancienne carrière" : "CarriereAncienne.png",
+        "Carrière" : "Carriere.png",
+        "Ancienne mine" : "MineAncienne.png",
+        "Mine" : "Mine.png",
+        "Puy de mine" : "puyMine.tif",
+        "Puy de mine comblé" : "puyMineComble.bmp",
+        "Galerie" : "Galerie.png",
+        "Haldes" : "BRGM.png",
+        "Plein champ" : "BRGM.png",
+        "Rivière" : "BRGM.png",
+        "Plage" : "BRGM.png",
+        "Travaux" : "BRGM.png",
+        "Recherches" : "BRGM.png",
+        "Indice" : "Indice.png",
+        "Filon" : "Filon.png"
+    };
+
 angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()])
 
     .config(['GoogleMapApiProvider'.ns(), function (GoogleMapApi) {
@@ -139,7 +158,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 
         $scope.delete = function (id) {
 
-            var i = null;
+            var i = null;m
             angular.forEach($scope.$storage.archive, function (value, index) {
 
                 if (value.id === id) {
@@ -199,7 +218,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
             }
         }
 
-        $scope.query = "SELECT s.SiteId as id, s.SiteNom name, s.SiteDescrGen as description, c.longitude as longitude, c.latitude as latitude FROM Sites s, Communes c WHERE s.CommuneId=c.CommuneId";
+        $scope.query = "SELECT s.SiteId as id, s.SiteNom name, s.SiteDescrGen as description, s.SiteType as type, c.longitude as longitude, c.latitude as latitude FROM Sites s, Communes c WHERE s.CommuneId=c.CommuneId";
 
 
         function modify(data) {
@@ -210,11 +229,18 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
                     marker.showWindow = true;
                     $scope.$apply();
                 };
+                var iconPath = "../../assets/app/img/";
+                var currentType = value.type;
 
+                if (typeof markers[currentType] != 'undefined')
+                    iconPath+=markers[currentType];
+                else
+                    iconPath+='default.png'
                 value.options = {
                     animation: 0,
+                    labelAnchor: "22 0",
                     labelContent: '',
-                    labelAnchor: "22 0"
+                    icon : iconPath
                     //labelClass: "marker-labels"
                 }
             });
