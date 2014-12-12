@@ -43,7 +43,7 @@ class Minerals extends CI_Controller {
     	try{
 			$crud = new grocery_CRUD();
         	$crud->set_table('Acquisitions');
-        	$crud->set_relation('EchantillonId','Echantillons','Titre');
+        	$crud->set_relation('EchantillonId','Echantillons','{EchantillonId} - {Titre}');
 			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
 			
 			$crud->set_parent_add_form('EchantillonId',$this->basePath.'Echantillons/add?add=true');
@@ -119,15 +119,20 @@ class Minerals extends CI_Controller {
 		try{
 			$crud = new grocery_CRUD();
         	$crud->set_table('Echanges');
-        	$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
-			
-			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
+        	$crud->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}')
+                ->set_relation_n_n('Sorties', 'JointureEchangesSorties', 'SortiesCollection', 'EchangeId', 'SortieId', '{SortieDate} {SortiePrecision}')
+            ->set_relation_n_n('Acquisitions', 'jointureEchangesAcquisitions', 'Acquisitions', 'EchangeId', 'AcquisitionId', '{AcquisitionDate} - {Acquisitions.AcquisitionId}');
+
+            $crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
+
 		
 		$this->_set_unset_back_to_list($crud);
-    	    $output = $crud->render();
- 
-        	$this->_do_output($output);
-			      
+
+            $output = $crud->render();
+
+
+            $this->_do_output($output);
+
 		}catch(Exception $e){
 			show_error($e->getMessage().' --- '.$e->getTraceAsString());
 		}  
@@ -138,13 +143,14 @@ class Minerals extends CI_Controller {
 		try{
 			$crud = new grocery_CRUD();
         	$crud->set_table('Echantillons')
-        	->set_relation('PersonneId','Personnes','PersonneMoraleNom')
+        	->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}')
 			->set_relation('RegionId','Regions','RegionNCCENR')
 			->set_relation('DepartementId','Departements','DepartementNCCENR')
-			->set_relation('SortieId','SortiesCollection','SortiePrecision')
+			->set_relation('SortieId','SortiesCollection','{SortieDate} {SortiePrecision}',null,'SortieDate DESC')
 			->set_relation('SiteId','Sites','SiteNom')
 			->set_relation('CommuneId', 'Communes', 'CommuneNCCENR')
-			->set_relation('EtatId','Etats','EtatNom');
+			->set_relation('EtatId','Etats','EtatNom')
+            ->set_relation_n_n('Mineraux', 'JointureEchantillonsMineraux', 'Mineraux', 'EchantillonId', 'MineralId', 'MineralNom');
 			
 			$crud->set_parent_add_form_label_field("Titre");
 			
@@ -239,7 +245,9 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('Personnes');
 		
-		$crud->set_parent_add_form_label_field("PersonneMoraleNom");
+		    $crud->set_parent_add_form_label_field("PersonneMoraleNom");
+
+            $crud->set_relation_n_n('Adresses', 'JointurePersonnesAdresses', 'Adresses', 'PersonneId', 'AdresseId', '{Ville}, {NumeroEtRueAdresse}');
     	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
  
@@ -283,6 +291,8 @@ public function Etats(){
 
 			$crud->set_parent_add_form('CommuneId',$this->basePath.'Communes/add?add=true');	
 			$crud->set_parent_add_form_label_field("SiteNom");
+            $crud->set_relation_n_n('Mineraux', 'jointureSitesMineraux', 'Mineraux', 'SiteId', 'MineralId', 'MineralNom')
+                ->set_relation_n_n('Fiches_BRGM', 'SitesJoinBRGMExploitations', 'BRGMExploitations', 'SiteId', 'NumFiche', 'NomExploitation');
 
             $state = $crud->getState();
 
@@ -302,25 +312,25 @@ public function Etats(){
 		}
 	}
 	
-	public function SitesGeoLocalisation()
-	{
-		try{
-			$crud = new grocery_CRUD();
-
-			$crud->set_table('SitesGeoLocalisation')
-			->set_relation('SiteId','Sites','SiteNom');
-
-			$crud->set_parent_add_form('SiteId',$this->basePath.'Sites/add?add=true');	
-
-			$this->_set_unset_back_to_list($crud);
-			$output = $crud->render();
-
-			$this->_do_output($output);
-
-		}catch(Exception $e){
-			show_error($e->getMessage().' --- '.$e->getTraceAsString());
-		}
-	}
+//	public function SitesGeoLocalisation()
+//	{
+//		try{
+//			$crud = new grocery_CRUD();
+//
+//			$crud->set_table('SitesGeoLocalisation')
+//			->set_relation('SiteId','Sites','SiteNom');
+//
+//			$crud->set_parent_add_form('SiteId',$this->basePath.'Sites/add?add=true');
+//
+//			$this->_set_unset_back_to_list($crud);
+//			$output = $crud->render();
+//
+//			$this->_do_output($output);
+//
+//		}catch(Exception $e){
+//			show_error($e->getMessage().' --- '.$e->getTraceAsString());
+//		}
+//	}
 
 	public function SortiesCollection()
 	{
@@ -328,8 +338,8 @@ public function Etats(){
 			$crud = new grocery_CRUD();
 
 			$crud->set_table('SortiesCollection')
-			->set_relation('EchantillonId','Echantillons','Titre')
-			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+			->set_relation('EchantillonId','Echantillons','{EchantillonId} - {Titre}')
+			->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}');
 
 			$crud->set_parent_add_form('EchantillonId',$this->basePath.'Echantillons/add?add=true');
 			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
@@ -352,7 +362,7 @@ public function SortiesSurTerrain()
 
 			$crud->set_table('SortiesSurTerrain')
 			->set_relation('SiteId','Sites','SiteNom')
-			->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+			->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonnePrenom} {PersonneNom}');
 
 			$crud->set_parent_add_form('SiteId',$this->basePath.'Sites/add?add=true');
 			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
