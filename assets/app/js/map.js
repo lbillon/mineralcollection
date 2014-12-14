@@ -1,21 +1,21 @@
 var markers = 
     {
-        "Ancienne carrière" : "CarriereAncienne.png",
-        "Carrière" : "Carriere.png",
-        "Ancienne mine" : "MineAncienne.png",
-        "Mine" : "Mine.png",
-        "Puy de mine" : "puyMine.tif",
-        "Puy de mine comblé" : "puyMineComble.bmp",
-        "Galerie" : "Galerie.png",
-        "Haldes" : "BRGM.png",
-        "Plein champ" : "BRGM.png",
-        "Rivière" : "BRGM.png",
-        "Plage" : "BRGM.png",
-        "Travaux" : "BRGM.png",
-        "Recherches" : "BRGM.png",
-        "Indice" : "Indice.png",
-        "Filon" : "Filon.png"
-    };
+        "ancienne carrière" : "CarriereAncienne.png",
+        "carrière" : "Carriere.png",
+        "ancienne mine" : "MineAncienne.png",
+        "mine" : "Mine.png",
+        "puy de mine" : "puyMine.tif",
+        "puy de mine comblé" : "puyMineComble.bmp",
+        "galerie" : "Galerie.png",
+        "haldes" : "BRGM.png",
+        "plein champ" : "corn.png",
+        "rivière" : "corn.png",
+        "plage" : "corn.png",
+        "travaux" : "travaux.png",
+        "recherches" : "BRGM.png",
+        "indice" : "Indice.png",
+        "filon" : "Filon.png"
+    };// /!\ need lowercase keys
 
 angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()])
 
@@ -230,7 +230,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
                     $scope.$apply();
                 };
                 var iconPath = "../../assets/app/img/";
-                var currentType = value.type;
+                var currentType = value.type.toLowerCase();
 
                 if (typeof markers[currentType] != 'undefined')
                     iconPath+=markers[currentType];
