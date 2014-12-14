@@ -50,7 +50,7 @@
                                   <li><a href='<?php echo site_url('minerals/Personnes')?>'>Personnes</a></li>
                                   <li><a href='<?php echo site_url('minerals/Regions')?>'>Regions</a></li>
                                   <li><a href='<?php echo site_url('minerals/sites')?>'>Sites</a></li>
-                                  <li><a href='<?php echo site_url('minerals/SitesGeoLocalisation')?>'>SitesGeoLocalisation</a></li>
+<!--                                  <li><a href='--><?php //echo site_url('minerals/SitesGeoLocalisation')?><!--'>SitesGeoLocalisation</a></li>-->
                                   <li><a href='<?php echo site_url('minerals/SortiesCollection')?>'>SortiesCollection</a></li>
                                   <li><a href='<?php echo site_url('minerals/SortiesSurTerrain')?>'>SortiesSurTerrain</a></li>
                    </ul>
