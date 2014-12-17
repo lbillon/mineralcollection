@@ -80,7 +80,7 @@
     <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
    
     <script src="<?php echo asset_url(); ?>app/js/lodash.min.js"></script>
-    <script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.7/dist/angular-google-maps.min.js"></script>
+    <script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.12/dist/angular-google-maps.min.js" type="text/javascript"></script>
     
     <script src="<?php echo asset_url(); ?>app/js/map.js"></script>
     

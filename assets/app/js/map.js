@@ -17,19 +17,12 @@ var markers =
         "filon" : "Filon.png"
     };// /!\ need lowercase keys
 
-angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()])
+angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'uiGmapgoogle-maps'])
 
-    .config(['GoogleMapApiProvider'.ns(), function (GoogleMapApi) {
-        GoogleMapApi.configure({
-            key: 'AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc',
-            v: '3.17',
-            libraries: 'weather,geometry,visualization'
-        });
-    }])
-
-    .controller("map",['$scope', 'GoogleMapApi'.ns(), '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage ) {
+    .controller("map",['$scope', '$http', '$localStorage', function ($scope, $http, $localStorage ) {
 
         $scope._={};
+        $scope.data = [];
 
         if (!Date.now) {
             Date.now = function() { return new Date().getTime(); };
@@ -40,33 +33,17 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
         });
 
 
-        $scope.map = { center: { latitude: 45.4, longitude: 2.1 }, zoom: 5 };
+        	$scope.map = { 
+        		center: { 
+        			latitude: 45.4, 
+        			longitude: 2.1 
+        		}, 
+        		zoom: 5,
+        		info: {}
+        	};
 
-        $scope.markerClicked = function () {
-            console.log(this);
-
-            /*
-             var onMarkerClicked = function (marker) {
-             marker.showWindow = true;
-             $scope.$apply();
-             //window.alert("Marker: lat: " + marker.latitude + ", lon: " + marker.longitude + " clicked!!")
-             };
-             */
-        }
-
-        /*
-         * GoogleMapApi is a promise with a
-         * then callback of the google.maps object
-         *   @pram: maps = google.maps
-         */
-        GoogleMapApi.then(function(maps) {
-            // map loaded
-
-            var height = window.innerHeight - 52;
-            $('.angular-google-map-container').css( "height", height+"px" );
-
-
-        });
+         var height = window.innerHeight - 52;
+         $('.angular-google-map-container').css( "height", height+"px" );
 
 
         $(window).resize(function(){
@@ -158,7 +135,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 
         $scope.delete = function (id) {
 
-            var i = null;m
+            var i = null;
             angular.forEach($scope.$storage.archive, function (value, index) {
 
                 if (value.id === id) {
@@ -210,7 +187,8 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 
         $scope.zoomto = function (el) {
             if (el.longitude && el.latitude) {
-                $scope.map = { center: { latitude: el.latitude, longitude: el.longitude }, zoom: 10 };
+                $scope.map.center = { latitude: el.latitude, longitude: el.longitude }
+                $scope.map.zoom = 10;
 
                 muteAnimations();
                 el.options.animation = 1;
@@ -223,12 +201,16 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 
         function modify(data) {
 
-            angular.forEach(data, function (value, index) {
-                value.onClick = function (marker) {
-                    console.log(marker);
-                    marker.showWindow = true;
-                    $scope.$apply();
+            angular.forEach(data, function (value, index) {              
+                value.onClick = function () {
+                	  $scope.map.info = angular.copy(value);
+                	  data[index].show = !data[index].show;
+                	  
                 };
+                value.idKey = value.id;
+                value.show = false;
+                
+                
                 var iconPath = "../../assets/app/img/";
                 var currentType = value.type.toLowerCase();
 
@@ -276,7 +258,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'google-maps'.ns()]
 
 
         }
-    }]).controller("picker",['$scope', 'GoogleMapApi'.ns(), '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage ) {
+    }]).controller("picker",['$scope', 'uiGmapgoogle-maps', '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage ) {
 
 
 

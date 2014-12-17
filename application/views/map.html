@@ -2,13 +2,15 @@
 	<div class="col-md-12" style="padding: 0;">
     	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
 
-			<!--ui-gmap-window show="selected.show" coords="selected.coords" ng-cloak>
-				<div>Name: {{selected.name}}</div>
-				<div>Description: {{selected.description}}</div>
-				<div>Link: <a ng-href="{{'/index.php/minerals/sites/read/'+selected.id}}" target="_blank"></a>{{selected.id}}</div>
-        	</ui-gmap-window-->    	
-    	
 			<ui-gmap-markers models="data" coords="'self'" icon="'icon'" click="'onClick'" options="'options'" fit='true'>
+				<ui-gmap-windows show="show">
+					<div style="width: 250px;">
+						<div>Name: {{map.info.name}}</div>
+						<div>Description: {{map.info.description}}</div>
+						<div>Link: <a ng-href="{{'/mineralcollection/index.php/minerals/sites/read/'+map.info.id}}" target="_blank">UPDATE RECORD</a></div>					
+					</div>
+									
+            </ui-gmap-windows>        	
         	</ui-gmap-markers>       	
     	</ui-gmap-google-map>
     	
