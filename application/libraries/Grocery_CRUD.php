@@ -2377,7 +2377,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
     	} elseif (is_array($value)) {
     	    if($field_info->extras->relation_table){
 
-    	    var_dump($field_info);
     	    foreach($value as $id=>$name)
             {
             			$read_only_value.='<a href="../../'.$field_info->extras->selection_table.'/read/'.$id.'">'.$name.'</a>'.', ';
