@@ -47,7 +47,7 @@ class Minerals extends CI_Controller {
 			$crud -> set_relation('EchantillonId', 'Echantillons', '{EchantillonId} - {Titre}');
 			$crud -> set_relation('PersonneId', 'Personnes', '{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}');
 			$crud -> set_relation('ManifestationId', 'Manifestations', 'NomManifestation');
-			
+			$crud->set_parent_add_form('ManifestationId',$this->basePath.'Manifestations/add?add=true');
 			$crud->set_parent_add_form('EchantillonId',$this->basePath.'Echantillons/add?add=true');
 			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
 		
@@ -126,6 +126,7 @@ class Minerals extends CI_Controller {
             ->set_relation_n_n('Acquisitions', 'jointureEchangesAcquisitions', 'Acquisitions', 'EchangeId', 'AcquisitionId', '{AcquisitionDate} - {Acquisitions.AcquisitionId}');
 
 			$crud -> set_relation('ManifestationId', 'Manifestations', 'NomManifestation');
+			$crud->set_parent_add_form('ManifestationId',$this->basePath.'Manifestations/add?add=true');
             $crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
 
 		
