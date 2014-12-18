@@ -129,8 +129,8 @@ class Minerals extends CI_Controller {
 		
 		$this->_set_unset_back_to_list($crud);
 		
-		// $crud->set_detailed_relationship_table("Acquisitions",$this->baseDetailsPath.'Acquisitions?subject=Echanges&field=EchantillonId&value=');
-		// $crud->set_detailed_relationship_table("Sorties",$this->baseDetailsPath.'SortiesCollection?subject=SortiesCollection&field=SortieId&value=');
+		$crud->set_detailed_relationship_table("Acquisitions",$this->baseDetailsPath.'Acquisitions?subject=Echanges&field=EchangeId&value=');
+		$crud->set_detailed_relationship_table("Sorties",$this->baseDetailsPath.'SortiesCollection?subject=Echanges&field=EchangeId&value=');
         
 		$output = $crud->render();
 
