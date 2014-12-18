@@ -1526,7 +1526,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->add_url				= $this->getAddUrl();
 		$data->edit_url				= $this->getEditUrl();
 		$data->delete_url			= $this->getDeleteUrl();
-		$data->read_url				= $this->getReadUrl();
+		$data->read_url				= $this->getReadUrl(); // bacsic read url appears on each row magnifying glass
+		$data->details_relation_url	= $this->getDetailsRelationUrl(); // bacsic read url appears on each row magnifying glass
 		$data->ajax_list_url		= $this->getAjaxListUrl();
 		$data->ajax_list_info_url	= $this->getAjaxListInfoUrl();
 		$data->export_url			= $this->getExportToExcelUrl();
@@ -1556,7 +1557,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$data->list[$num_row]->edit_url = $data->edit_url.'/'.$row->{$data->primary_key};
 			$data->list[$num_row]->delete_url = $data->delete_url.'/'.$row->{$data->primary_key};
-			$data->list[$num_row]->read_url = $data->read_url.'/'.$row->{$data->primary_key};
+			$data->list[$num_row]->read_url = $data->read_url.'/'.$row->{$data->primary_key}."?read_url_query=true&".$this->getDetailsRelationUrl();
 		}
 
 		if(!$ajax)
@@ -1839,6 +1840,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->update_url	= $this->getUpdateUrl($state_info);
 		$data->delete_url	= $this->getDeleteUrl($state_info);
 		$data->read_url		= $this->getReadUrl($state_info->primary_key);
+		$data->details_relation_read_url = $this->details_relation_table_url;
+		$data->details_relation_url	= $this->getDetailsRelationUrl(); // bacsic read url appears on each row magnifying glass
 		$data->input_fields = $this->get_read_input_fields($data->field_values);
 		$data->unique_hash			= $this->get_method_hash();
 
@@ -3123,10 +3126,22 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 
 	protected function getReadUrl($primary_key = null)
 	{
+
 		if($primary_key === null)
 			return $this->state_url('read');
 		else
 			return $this->state_url('read/'.$primary_key);
+	}
+	
+	protected function getDetailsRelationUrl()
+	{
+		if(count($this->details_relation_table) === 0)
+			return "";
+		else
+		{
+			$url = explode("?",current($this->details_relation_table));
+			return $url[1];
+		}	
 	}
 
 	protected function getUpdateUrl($state_info)
@@ -3406,6 +3421,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
 	protected $parent_add_form		= array();
 	protected $details_relation_table	= array();
+	protected $details_relation_table_url = "";
 	protected $parent_add_form_field = null;
 	protected $relation_n_n			= array();
 	protected $upload_fields		= array();
@@ -4976,6 +4992,10 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this;
 	}
 	
+	public function set_detailed_relationship_table_url($url){
+		$this->details_relation_table_url = $url;
+		return $this;
+	}
 	
 	/**
 	 *

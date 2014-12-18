@@ -40,7 +40,8 @@ class Minerals_relation_details extends CI_Controller {
 			$fieldName = $this -> input -> get('field');
 			$fieldValue = $this -> input -> get('value');
 			$subject = $this -> input -> get('subject');
-
+			$read_url = $this -> input -> get('read_url_query');
+			
 			$crud -> set_table('Acquisitions') -> set_subject($subject);
 			$crud -> set_relation('EchantillonId', 'Echantillons', '{EchantillonId} - {Titre}');
 			$crud -> set_relation('PersonneId', 'Personnes', 'PersonneMoraleNom');
@@ -60,7 +61,13 @@ class Minerals_relation_details extends CI_Controller {
 				} else {
 					$crud -> where('AcquisitionId', "");
 				}
+				
+				if($read_url==null)
 				$crud -> set_detailed_relationship_table("Acquisitions", '?subject=Echanges&field=EchangeId&value=' . $fieldValue);
+				else {
+					$crud -> set_detailed_relationship_table_url('?subject=Echanges&field=EchangeId&value=' . $fieldValue);
+				}
+				
 			}
 
 			$crud -> unset_add();
@@ -159,10 +166,15 @@ class Minerals_relation_details extends CI_Controller {
 			$fieldName = $this -> input -> get('field');
 			$fieldValue = $this -> input -> get('value');
 			$subject = $this -> input -> get('subject');
+			$read_url = $this -> input -> get('read_url_query');
 			$crud -> set_table('Echantillons') -> set_subject($subject) -> set_relation('PersonneId', 'Personnes', '{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}') -> set_relation('RegionId', 'Regions', 'RegionNCCENR') -> set_relation('DepartementId', 'Departements', 'DepartementNCCENR') -> set_relation('SortieId', 'SortiesCollection', '{SortieDate} {SortiePrecision}', null, 'SortieDate DESC') -> set_relation('SiteId', 'Sites', 'SiteNom') -> set_relation('CommuneId', 'Communes', 'CommuneNCCENR') -> set_relation('EtatId', 'Etats', 'EtatNom') -> set_relation_n_n('Mineraux', 'JointureEchantillonsMineraux', 'Mineraux', 'EchantillonId', 'MineralId', 'MineralNom');
 			if ($fieldName != null) {
 				$crud -> where('Echantillons.' . $fieldName, $fieldValue);
+				if($read_url==null)
 				$crud -> set_detailed_relationship_table("Echantillons", '?subject=Sites&field=SiteId&value=' . $fieldValue);
+				else {
+					$crud -> set_detailed_relationship_table_url('?subject=Sites&field=SiteId&value=' . $fieldValue);
+				}
 			}
 
 			$crud -> unset_add();
@@ -335,7 +347,8 @@ class Minerals_relation_details extends CI_Controller {
 			$fieldName = $this -> input -> get('field');
 			$fieldValue = $this -> input -> get('value');
 			$subject = $this -> input -> get('subject');
-
+			$read_url = $this -> input -> get('read_url_query');
+			
 			$crud -> set_table('SortiesCollection') -> set_relation('EchantillonId', 'Echantillons', '{EchantillonId} - {Titre}') -> set_relation('PersonneId', 'Personnes', '{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}');
 
 			if ($fieldName != null && $fieldName == "EchangeId") {
@@ -353,7 +366,13 @@ class Minerals_relation_details extends CI_Controller {
 				} else {
 					$crud -> where('SortiesCollection.SortieId', "");
 				}
-				$crud -> set_detailed_relationship_table("Sorties", '?subject=Echanges&field=EchangeId&value=' . $fieldValue);
+				
+				if($read_url==null)
+					$crud -> set_detailed_relationship_table("Sorties", '?subject=Echanges&field=EchangeId&value=' . $fieldValue);
+				else {
+					$crud -> set_detailed_relationship_table_url('?subject=Echanges&field=EchangeId&value=' . $fieldValue);
+				}
+				
 			}
 
 			$crud -> unset_add();
