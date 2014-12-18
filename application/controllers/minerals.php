@@ -44,9 +44,10 @@ class Minerals extends CI_Controller {
     	try{
 			$crud = new grocery_CRUD();
         	$crud->set_table('Acquisitions');
-        	$crud->set_relation('EchantillonId','Echantillons','{EchantillonId} - {Titre}');
-			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
-			
+			$crud -> set_relation('EchantillonId', 'Echantillons', '{EchantillonId} - {Titre}');
+			$crud -> set_relation('PersonneId', 'Personnes', '{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}');
+			$crud -> set_relation('ManifestationId', 'Manifestations', 'NomManifestation');
+			$crud->set_parent_add_form('ManifestationId',$this->basePath.'Manifestations/add?add=true');
 			$crud->set_parent_add_form('EchantillonId',$this->basePath.'Echantillons/add?add=true');
 			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
 		
@@ -124,6 +125,8 @@ class Minerals extends CI_Controller {
                 ->set_relation_n_n('Sorties', 'JointureEchangesSorties', 'SortiesCollection', 'EchangeId', 'SortieId', '{SortieDate} {SortiePrecision}')
             ->set_relation_n_n('Acquisitions', 'jointureEchangesAcquisitions', 'Acquisitions', 'EchangeId', 'AcquisitionId', '{AcquisitionDate} - {Acquisitions.AcquisitionId}');
 
+			$crud -> set_relation('ManifestationId', 'Manifestations', 'NomManifestation');
+			$crud->set_parent_add_form('ManifestationId',$this->basePath.'Manifestations/add?add=true');
             $crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
 
 		
@@ -199,7 +202,7 @@ public function Etats(){
 			$crud = new grocery_CRUD();
         	$crud->set_table('Manifestations')
         		 ->set_relation('CommuneId', 'Communes', 'CommuneNCCENR');
-			
+
 			$crud->set_parent_add_form('CommuneId',$this->basePath.'Communes/add?add=true');
     	    $this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();

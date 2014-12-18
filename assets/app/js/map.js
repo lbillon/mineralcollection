@@ -258,7 +258,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'uiGmapgoogle-maps'
 
 
         }
-    }]).controller("picker",['$scope', 'uiGmapgoogle-maps', '$http', '$localStorage', function ($scope, GoogleMapApi, $http, $localStorage ) {
+    }]).controller("picker",['$scope',  '$http', '$localStorage', function ($scope,  $http, $localStorage ) {
 
 
 
@@ -289,25 +289,8 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'uiGmapgoogle-maps'
 
         };
 
-
-
-
-
-
-
-        /*
-         * GoogleMapApi is a promise with a
-         * then callback of the google.maps object
-         *   @pram: maps = google.maps
-         */
-        GoogleMapApi.then(function(maps) {
-            // map loaded
-
             var height = 500;
             $('.angular-google-map-container').css( "height", height+"px" );
-
-
-        });
 
 
 

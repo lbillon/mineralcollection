@@ -44,7 +44,8 @@ class Minerals_relation_details extends CI_Controller {
 			
 			$crud -> set_table('Acquisitions') -> set_subject($subject);
 			$crud -> set_relation('EchantillonId', 'Echantillons', '{EchantillonId} - {Titre}');
-			$crud -> set_relation('PersonneId', 'Personnes', 'PersonneMoraleNom');
+			$crud -> set_relation('PersonneId', 'Personnes', '{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}');
+			$crud -> set_relation('ManifestationId', 'Manifestations', 'NomManifestation');
 
 			if ($fieldName != null && $fieldName == "EchangeId") {
 				$this -> db -> select('AcquisitionId');
