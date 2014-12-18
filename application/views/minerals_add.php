@@ -23,9 +23,11 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>fancyBox-v2.1.5/source/jquery.fancybox.css?v=2.1.5" media="screen" />
       
    <script type="text/javascript">
+	try{
 	$(document).ready(function() {
 		$(".fancybox").fancybox();
 	});
+	}catch(e){}
 </script>
 
   </head>

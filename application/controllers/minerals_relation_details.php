@@ -1,9 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
-class Minerals extends CI_Controller {
+/**
+ * This controller only used to show reverse relations in detailed view
+ */
+class Minerals_relation_details extends CI_Controller {
 
 	var $basePath = "/mineralcollection/index.php/minerals/";
-	var $baseDetailsPath = "/mineralcollection/index.php/minerals_relation_details/";
 	public function __construct()
 	{
 		parent::__construct();
@@ -16,11 +17,7 @@ class Minerals extends CI_Controller {
 
 	public function _do_output($output = null)
 	{
-		if($this->input->get('add', TRUE)){
 			$this->load->view('minerals_add.php',$output);
-		}else{
-			$this->load->view('minerals.php',$output);			
-		}
 	}
 
 	private function _set_unset_back_to_list($crud){
@@ -43,12 +40,21 @@ class Minerals extends CI_Controller {
     {
     	try{
 			$crud = new grocery_CRUD();
-        	$crud->set_table('Acquisitions');
-        	$crud->set_relation('EchantillonId','Echantillons','{EchantillonId} - {Titre}');
-			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+        	
+        	
 			
-			$crud->set_parent_add_form('EchantillonId',$this->basePath.'Echantillons/add?add=true');
-			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
+			
+			$fieldName = $this->input->get('field');
+			$fieldValue = $this->input->get('value');
+			$subject = $this->input->get('subject');
+        	$crud->set_table('Acquisitions')
+			->set_subject($subject);
+			$crud->set_relation('EchantillonId','Echantillons','{EchantillonId} - {Titre}');
+			$crud->set_relation('PersonneId','Personnes','PersonneMoraleNom');
+  		    if($fieldName!=null){
+  		    	$crud->where('Acquisitions.'.$fieldName,$fieldValue);	
+				$crud->set_detailed_relationship_table("Acquisitions",'?subject=Echanges&field=EchantillonId&value=');
+  		    }			
 		
 			$this->_set_unset_back_to_list($crud);
     	    $output = $crud->render();
@@ -128,11 +134,8 @@ class Minerals extends CI_Controller {
 
 		
 		$this->_set_unset_back_to_list($crud);
-		
-		// $crud->set_detailed_relationship_table("Acquisitions",$this->baseDetailsPath.'Acquisitions?subject=Echanges&field=EchantillonId&value=');
-		// $crud->set_detailed_relationship_table("Sorties",$this->baseDetailsPath.'SortiesCollection?subject=SortiesCollection&field=SortieId&value=');
-        
-		$output = $crud->render();
+
+            $output = $crud->render();
 
 
             $this->_do_output($output);
@@ -146,8 +149,12 @@ class Minerals extends CI_Controller {
 	public function Echantillons(){
 		try{
 			$crud = new grocery_CRUD();
+			$fieldName = $this->input->get('field');
+			$fieldValue = $this->input->get('value');
+			$subject = $this->input->get('subject');
         	$crud->set_table('Echantillons')
-        	->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}')
+			->set_subject($subject)
+			->set_relation('PersonneId','Personnes','{PersonneMoraleNom} {PersonneNom} {PersonnePrenom}')
 			->set_relation('RegionId','Regions','RegionNCCENR')
 			->set_relation('DepartementId','Departements','DepartementNCCENR')
 			->set_relation('SortieId','SortiesCollection','{SortieDate} {SortiePrecision}',null,'SortieDate DESC')
@@ -155,18 +162,14 @@ class Minerals extends CI_Controller {
 			->set_relation('CommuneId', 'Communes', 'CommuneNCCENR')
 			->set_relation('EtatId','Etats','EtatNom')
             ->set_relation_n_n('Mineraux', 'JointureEchantillonsMineraux', 'Mineraux', 'EchantillonId', 'MineralId', 'MineralNom');
-			
-			$crud->set_parent_add_form_label_field("Titre");
-			
-			$crud->set_parent_add_form('PersonneId',$this->basePath.'Personnes/add?add=true');
-			$crud->set_parent_add_form('RegionId',$this->basePath.'Regions/add?add=true');
-			$crud->set_parent_add_form('DepartementId',$this->basePath.'Departements/add?add=true');
-			$crud->set_parent_add_form('SortieId',$this->basePath.'SortiesCollection/add?add=true');
-			$crud->set_parent_add_form('SiteId',$this->basePath.'Sites/add?add=true');
-			$crud->set_parent_add_form('CommuneId',$this->basePath.'Communes/add?add=true');
-			$crud->set_parent_add_form('EtatId',$this->basePath.'Etats/add?add=true');
+  		    if($fieldName!=null){
+  		    	$crud->where('Echantillons.'.$fieldName,$fieldValue);	
+				$crud->set_detailed_relationship_table("Echantillons",'?subject=Sites&field=SiteId&value='.$fieldValue);
+  		    }			
 		
-		$this->_set_unset_back_to_list($crud);
+			$crud->unset_add();
+			$crud->unset_delete();
+			$crud->unset_edit();
     	    $output = $crud->render();
  
         	$this->_do_output($output);
@@ -298,7 +301,6 @@ public function Etats(){
             $crud->set_relation_n_n('Mineraux', 'jointureSitesMineraux', 'Mineraux', 'SiteId', 'MineralId', 'MineralNom')
                 ->set_relation_n_n('Fiches_BRGM', 'SitesJoinBRGMExploitations', 'BRGMExploitations', 'SiteId', 'NumFiche', 'NomExploitation');
 
-			$crud->set_detailed_relationship_table("Echantillons",$this->baseDetailsPath.'Echantillons?subject=Sites&field=SiteId&value=');
             $state = $crud->getState();
 
             if($state=='edit'|| $state=='add') {

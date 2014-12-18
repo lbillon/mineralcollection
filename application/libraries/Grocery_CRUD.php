@@ -1848,7 +1848,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$data->validation_url	= $this->getValidationUpdateUrl($state_info->primary_key);
 		$data->is_ajax 			= $this->_is_ajax();
-
+		// added by Hafiz Saqib Javed to show relations on detailed page
+		$data->detailed_relations = $this->details_relation_table;
+		$data->primary_key = $state_info->primary_key;
+		
 		$this->_theme_view('read.php',$data);
 		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
 
@@ -3050,10 +3053,17 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 	{
 		return $this->state_url('',true);
 	}
-
+	/**
+	 * Added by Hafiz Saqib Javed to apply any condition send by detailed view page 
+	 */
 	protected function getAjaxListUrl()
 	{
+		$url = current($this->details_relation_table);
+		if(isset($url)){
+			return $this->state_url('ajax_list'.$url);
+		}else{
 		return $this->state_url('ajax_list');
+		}
 	}
 
 	protected function getExportToExcelUrl()
@@ -3066,9 +3076,18 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 		return $this->state_url('print');
 	}
 
+	/**
+	 * Added by Hafiz Saqib Javed to apply any condition send by detailed view page 
+	 */
 	protected function getAjaxListInfoUrl()
 	{
-		return $this->state_url('ajax_list_info');
+		$url = current($this->details_relation_table);
+		if(isset($url)){
+			return $this->state_url('ajax_list_info'.$url);
+		}else{
+			return $this->state_url('ajax_list_info');	
+		}
+		
 	}
 
 	protected function getAddUrl()
@@ -3386,6 +3405,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $relation				= array();
 	/* Added By Hafiz Saqib Javed for Enabling parent add form from Child*/
 	protected $parent_add_form		= array();
+	protected $details_relation_table	= array();
 	protected $parent_add_form_field = null;
 	protected $relation_n_n			= array();
 	protected $upload_fields		= array();
@@ -4293,6 +4313,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 		switch ($this->state_code) {
 			case 15://success
 			case 1://list
+			
 				if($this->unset_list)
 				{
 					throw new Exception('You don\'t have permissions for this operation', 14);
@@ -4408,7 +4429,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 			break;
 
 			case 8://ajax_list_info
-
+				
 				if($this->theme === null)
 					$this->set_theme($this->default_theme);
 				$this->setThemeBasics();
@@ -4416,9 +4437,11 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->set_basic_Layout();
 
 				$state_info = $this->getStateInfo();
+	
 				$this->set_ajax_list_queries($state_info);
 
 				$this->showListInfo();
+
 			break;
 
 			case 9://insert_validation
@@ -4946,6 +4969,11 @@ class Grocery_CRUD extends grocery_CRUD_States
 	public function set_parent_add_form_label_field($field_name)
 	{
 		$this->parent_add_form_field = $field_name; 
+	}
+	
+	public function set_detailed_relationship_table($relationName, $url){
+		$this->details_relation_table[$relationName] = $url;
+		return $this;
 	}
 	
 	

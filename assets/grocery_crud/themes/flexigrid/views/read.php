@@ -53,6 +53,14 @@
 		<div id='report-success' class='report-div success'></div>
 	</div>
 	<div class="pDiv">
+		<?php
+			foreach ($detailed_relations as $key => $value) {
+				echo "<b style='font-size:18px; margin-left:10px;'>".$key."</b><br />";
+				echo "<iframe src='{$value}{$primary_key}' style='width: 99.8%;height: 450px;padding:10px; border:0px;'></iframe><br />";
+			}
+		?>
+		</div>
+	<div class="pDiv">
 		<div class='form-button-box'>
 			<input type='button' value='<?php echo $this->l('form_back_to_list'); ?>' class="btn btn-large back-to-list" id="cancel-button" />
 		</div>

@@ -87,7 +87,8 @@
     <!-- Added By Hafiz Saqib Javed for fancy box display to add parent from child --> 
     <script type="text/javascript">
 	$(document).ready(function() {
-		$(".fancybox").fancybox();
+		if($(".fancybox").length!=0)
+			$(".fancybox").fancybox();
 	});
 </script>
     
