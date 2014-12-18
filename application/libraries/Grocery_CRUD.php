@@ -132,6 +132,7 @@ class grocery_CRUD_Field_Types
 						ucfirst(str_replace("_"," ",$field_name));
 
 				$types[$field_name] = $field_info;
+
 			}
 		}
 
@@ -1306,7 +1307,6 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				$values->$field_name = $this->get_relation_n_n_selection_array($primary_key_value, $field_info);
 			}
 		}
-
 		return $values;
 	}
 
@@ -2364,15 +2364,31 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		return $input;
 	}
 
+
+
+
 	protected function get_readonly_input($field_info, $value)
 	{
+
 		$read_only_value = "&nbsp;";
 
 	    if (!empty($value) && !is_array($value)) {
 	    	$read_only_value = $value;
     	} elseif (is_array($value)) {
+    	    if($field_info->extras->relation_table){
+
+    	    var_dump($field_info);
+    	    foreach($value as $id=>$name)
+            {
+            			$read_only_value.='<a href="../../'.$field_info->extras->selection_table.'/read/'.$id.'">'.$name.'</a>'.', ';
+            }
+
+
+
+    	    }else{;
     		$all_values = array_values($value);
-    		$read_only_value = implode(", ",$all_values);
+            $read_only_value = implode(", ",$all_values);
+    		}
     	}
 
         return '<div id="field-'.$field_info->name.'" class="readonly_label">'.$read_only_value.'</div>';
