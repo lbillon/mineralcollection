@@ -5,9 +5,8 @@
 			<ui-gmap-markers models="data" coords="'self'" icon="'icon'" click="'onClick'" options="'options'" fit='true'>
 				<ui-gmap-windows show="show">
 					<div style="width: 250px;">
-						<div>Name: {{map.info.name}}</div>
-						<div>Description: {{map.info.description}}</div>
-						<div>Link: <a ng-href="{{'/mineralcollection/index.php/minerals/sites/read/'+map.info.id}}" target="_blank">UPDATE RECORD</a></div>					
+						<div><a ng-href="{{'sites/read/'+map.info.id}}" target="_blank">{{map.info.name}}</a></div>
+						<div><em>{{map.info.description}}</em></div>
 					</div>
 									
             </ui-gmap-windows>        	
