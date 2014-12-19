@@ -7,7 +7,7 @@
     <title>Mineral Collection</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo asset_url(); ?>app/css/bootstrap.min.css">
 
       <?php
       foreach($css_files as $file): ?>
@@ -70,17 +70,17 @@
 
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="<?php echo asset_url(); ?>app/js/bootstrap.min.js"></script>
     
     
 		<!-- Angularjs and other dependencies -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-sanitize.js"></script>
-    <script src="https://rawgithub.com/gsklee/ngStorage/master/ngStorage.js"></script>
+    <script src="<?php echo asset_url(); ?>app/js/angular.min.js"></script>
+    <script src="<?php echo asset_url(); ?>app/js/angular-route.js"></script>
+    <script src="<?php echo asset_url(); ?>app/js/angular-sanitize.js"></script>
+    <script src="<?php echo asset_url(); ?>app/js/ngStorage.js"></script>
    
     <script src="<?php echo asset_url(); ?>app/js/lodash.min.js"></script>
-    <script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.12/dist/angular-google-maps.min.js" type="text/javascript"></script>
+    <script src="<?php echo asset_url(); ?>app/js/angular-google-maps.min.js" type="text/javascript"></script>
     
     <script src="<?php echo asset_url(); ?>app/js/map.js"></script>
     
