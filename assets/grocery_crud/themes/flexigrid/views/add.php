@@ -78,11 +78,17 @@ function sendKeyToParent(key){
 					<?php echo $input_fields[$field->field_name]->input?> 
 					<?php if(isset($parent_add_form[$field->field_name])){ ?>
 				<div class="fbutton" style="float: right; margin-left: 20px;">
-					<span class="add"><a onclick="setNewParentId('<?="field-".$field->field_name?>');" class="fancybox fancybox.iframe" href="<?=$parent_add_form[$field->field_name][1]?>">Add <?=$field->field_name;?> </a></span>
-				</div>
+					<span class="add"><a onclick="setNewParentId('<?="field-".$field->field_name?>');" class="fancybox fancybox.iframe" href="<?=$parent_add_form[$field->field_name][1]?>">Add <?=$field->field_name;?> </a>
+                        - <a target="_blank" href="../<?=$input_fields[$field->field_name]->extras[1] ?>">liste</a>
+                    </span>
+
+                </div>
 			
 					<?php }
+
 					?>
+
+
 				</div>
 				
 				<div class='clear'></div>

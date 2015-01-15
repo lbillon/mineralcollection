@@ -294,8 +294,16 @@ public function Etats(){
 			->set_table('Sites')
 			->set_subject('Site')
 			->display_as('CommuneId','Commune')
-			->set_relation('CommuneId','Communes','CommuneNCCENR');
+			->set_relation('CommuneId','Communes','CommuneNCCENR')
+            ->set_relation('RegionId','Regions','RegionNCCENR')
+                ->set_relation('DepartementId','Departements','DepartementNCCENR')
+                ->set_relation('EtatId','Etats','EtatNom');
 
+            $crud->set_parent_add_form_label_field("Titre");
+
+            $crud->set_parent_add_form('RegionId',$this->basePath.'Regions/add?add=true');
+            $crud->set_parent_add_form('DepartementId',$this->basePath.'Departements/add?add=true');
+            $crud->set_parent_add_form('EtatId',$this->basePath.'Etats/add?add=true');
 			$crud->set_parent_add_form('CommuneId',$this->basePath.'Communes/add?add=true');	
 			$crud->set_parent_add_form_label_field("SiteNom");
             $crud->set_relation_n_n('Mineraux', 'jointureSitesMineraux', 'Mineraux', 'SiteId', 'MineralId', 'MineralNom')
