@@ -303,11 +303,13 @@ public function Etats(){
 
 			$crud->set_detailed_relationship_table("Echantillons",$this->baseDetailsPath.'Echantillons?subject=Sites&field=SiteId&value=');
             $state = $crud->getState();
+            if($state=='edit'|| $state=='add') {
+                $crud->fields('SiteNom', 'SiteType', 'MinerauxPresents', 'FossilesPresents', 'AutreInteret', 'SiteDescrGen', 'SiteLocalisation', 'SiteAccès', 'CommuneId', 'DepartementId', 'RegionId', 'EtatId', 'ISO2', 'RepSitePhotos', 'Latitude', 'Longitude', "pos");
+                $crud->callback_field('pos', function () {
+                    return $this->load->view('location_picker.html', '', true);
+                });
 
-            $crud->fields('SiteNom','SiteType','MinerauxPresents','FossilesPresents','AutreInteret','SiteDescrGen','SiteLocalisation','SiteAccès','CommuneId','DepartementId','RegionId','EtatId','ISO2','RepSitePhotos','Latitude','Longitude',"pos");
-            $crud->callback_field('pos', function () {
-                return $this->load->view('location_picker.html', '', true);
-            });
+            }
 
             $this->_set_unset_back_to_list($crud);
             $output = $crud->render();
