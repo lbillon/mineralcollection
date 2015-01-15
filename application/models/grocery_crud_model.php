@@ -162,12 +162,12 @@ class grocery_CRUD_Model  extends CI_Model  {
 
     function like($field, $match = '', $side = 'both')
     {
-    	$this->db->like($field, $match, $side);
+    	$this->db->like($this->long_field_name($field), $match, $side);
     }
 
     function or_like($field, $match = '', $side = 'both')
     {
-    	$this->db->or_like($field, $match, $side);
+    	$this->db->or_like($this->long_field_name($field), $match, $side);
     }
 
     function limit($value, $offset = '')
@@ -582,4 +582,18 @@ class grocery_CRUD_Model  extends CI_Model  {
     	return $this->db->escape_str($value);
     }
 
+
+    /**
+     * We use this function to make sure that the format for each field is <table_name>.<field>
+     * @param string $field
+     * @return string
+     */
+    function long_field_name($field)
+    {
+        if ((!is_null($this->table_name)) && (trim($this->table_name) != '') && (strpos($field, '.') === false)) {
+            return "$this->table_name.$field";
+        } else {
+            return $field;
+        }
+    }
 }

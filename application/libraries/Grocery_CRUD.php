@@ -579,6 +579,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 
 			if($state_info->search->field !== null)
 			{
+
 				if(isset($temp_relation[$state_info->search->field]))
 				{
 					if(is_array($temp_relation[$state_info->search->field]))
@@ -589,6 +590,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				}
 				elseif(isset($this->relation_n_n[$state_info->search->field]))
 				{
+
 					$escaped_text = $this->basic_model->escape_str($state_info->search->text);
 					$this->having($state_info->search->field." LIKE '%".$escaped_text."%'");
 				}
@@ -1143,6 +1145,12 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 			$field_names_array = array();
 			foreach($temp1 as $field)
 				list($field_names_array[]) = explode('}',$field);
+
+            //New Code - this was added to make sure that relations using more than one field in the
+            //$related_title_field paramter, will be using the unique table name infront of the field name
+            foreach ($field_names_array as $key => $field) {
+                $field_names_array[$key] = $this->_unique_join_name($relation_values[0]).'.'.$field;
+            }
 
 			return $field_names_array;
 		}
