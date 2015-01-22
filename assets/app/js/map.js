@@ -253,7 +253,7 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'uiGmapgoogle-maps'
 
                 }).
                 error(function(data, status, headers, config) {
-
+						alert("Error while executing query.");
                 });
 
 
