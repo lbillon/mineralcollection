@@ -1,5 +1,7 @@
-<div ng-app="app" ng-controller="picker" style="width: 400px;height:400px">
-    <div >
+<div ng-app="app" ng-controller="picker" >
+
+    {{siteLat}} - {{siteLon}} <a href ng-click="updateForm()" href="#">Valider</a>
+    <div style="width: 400px;height:400px">
         <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.events" style="width: 400px;height:400px">
 
             <ui-gmap-marker coords="map.center" options="marker.options" events="marker.events" idkey="marker.id">

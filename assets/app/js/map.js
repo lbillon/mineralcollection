@@ -265,16 +265,24 @@ angular.module('app', ['ngSanitize', 'ngRoute', 'ngStorage', 'uiGmapgoogle-maps'
 
 
         center_changed=function(e){
-            $('#field-Latitude').val(e.center.lat());
-            $('#field-Longitude').val(e.center.lng());
+            $scope.siteLat = e.center.lat();
+            $scope.siteLon = e.center.lng();
 
+        }
+
+
+
+        $scope.updateForm=function(){
+            $('#field-Latitude').val($scope.siteLat);
+            $('#field-Longitude').val($scope.siteLon);
         }
 
         var center={ latitude: 47, longitude: 3 };
 
         if( $('#field-Latitude').val() ||  $('#field-Longitude').val()){
             center={ latitude: $('#field-Latitude').val(), longitude: $('#field-Longitude').val() };
-
+            $scope.siteLat = $('#field-Latitude').val();
+            $scope.siteLon = $('#field-Longitude').val();
         }
 
 
